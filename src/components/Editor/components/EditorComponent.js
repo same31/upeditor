@@ -10,6 +10,8 @@ import {
 import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
 import Title from 'material-ui/svg-icons/editor/title';
 import InsertPhoto from 'material-ui/svg-icons/editor/insert-photo';
+import FormatListBulleted from 'material-ui/svg-icons/editor/format-list-bulleted';
+import FormatListNumbered from 'material-ui/svg-icons/editor/format-list-numbered';
 import Intel from '../Internalisation';
 //example of us Intel -> Internalisation.getMsg("btnSave");
 import ActionLanguage from 'material-ui/svg-icons/action/language';
@@ -149,7 +151,10 @@ export default class EditorComponent extends Component {
                                 <MenuItem primaryText={<h2>Title 2</h2>} />
                                 <MenuItem primaryText={<h3>Title 3</h3>} />
                             </IconMenu>
-                            <InsertPhoto />
+                            <IconButton><FormatListNumbered/></IconButton>
+                            <IconButton><FormatListBulleted/></IconButton>
+                            <ToolbarSeparator/>
+                            <IconButton><InsertPhoto /></IconButton>
                         </ToolbarGroup>
                         <ToolbarGroup>
                             <ToolbarTitle text={this.state.title}/>
