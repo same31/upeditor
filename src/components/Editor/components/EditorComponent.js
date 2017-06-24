@@ -50,18 +50,19 @@ export default class EditorComponent extends Component {
     clickHandler = (e) => {
         // Getting an array of DOM elements
         // Then finding which element was clicked
-        const nodes = Array.prototype.slice.call( e.currentTarget.children );
         let index = e.target;
         const errorMessage = index.getAttribute("data-error-message");
         if(errorMessage) {
             this.setState({
                 errorSelected: true,
-                errorMessage: errorMessage
+                errorMessage: errorMessage,
+                currentNode: index
             });
         } else {
             this.setState({
                 errorSelected: false,
-                errorMessage: ""
+                errorMessage: "",
+                currentNode: index
             });
         }
     };
@@ -132,8 +133,33 @@ export default class EditorComponent extends Component {
         });
     };
 
-    checkHTMLSemantic = (htmlCollection) => {
-        const htmlSemanticErrorList = getHTMLSemanticErrorList(htmlCollection);
+    /**
+     * @description Changes the current selected HTML node to the given anchor {h1,h2,h3}
+     * @param anchor
+     * @param event
+     */
+    setAnchor = (anchor, event) => {
+
+        event.preventDefault();
+        let currentSelection = document.getSelection().anchorNode;
+        if(currentSelection.nodeName === "#text"){
+            currentSelection = currentSelection.parentNode;
+        }
+        let newNode = document.createElement(anchor);
+        if(currentSelection.nodeName !== "DIV") {
+            let parentNode = currentSelection.parentNode;
+            newNode.setAttribute("contentEditable", "true");
+            newNode.innerHTML = currentSelection.innerHTML;
+            parentNode.replaceChild(newNode, currentSelection);
+        } else {
+            currentSelection.appendChild(newNode);
+            newNode.focus();
+        }
+        this.checkHTMLSemantic();
+    };
+
+    checkHTMLSemantic = () => {
+        const htmlSemanticErrorList = getHTMLSemanticErrorList(document.getElementById('accessibleDocument').childNodes);
 
         htmlSemanticErrorList.forEach(htmlSemanticError => {
             if (htmlSemanticError.error) {
@@ -153,9 +179,9 @@ export default class EditorComponent extends Component {
             ...listItem
         }, () => {
             if (listItem.content.__html) {
-                this.checkHTMLSemantic(document.getElementById('accessibleDocument').childNodes);
+                this.checkHTMLSemantic();
             }
-            else if (listItem.title === 'Empty Document') {
+            else {
                 document.getElementById('accessibleDocument').focus();
             }
             this.toggleDrawer();
@@ -206,9 +232,9 @@ export default class EditorComponent extends Component {
                                 iconButtonElement={<IconButton><Title /></IconButton>}
                                 anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                                 targetOrigin={{horizontal: 'left', vertical: 'bottom'}}>
-                                <MenuItem primaryText={<h1>Title 1</h1>} />
-                                <MenuItem primaryText={<h2>Title 2</h2>} />
-                                <MenuItem primaryText={<h3>Title 3</h3>} />
+                                <MenuItem primaryText={<h1>h1. Title 1</h1>} onTouchTap={this.setAnchor.bind(this, "h1")} />
+                                <MenuItem primaryText={<h2>h2. Title 2</h2>} onTouchTap={this.setAnchor.bind(this, "h2")} />
+                                <MenuItem primaryText={<h3>h3. Title 3</h3>} onTouchTap={this.setAnchor.bind(this, "h3")} />
                             </IconMenu>
                             <IconButton><FormatListNumbered/></IconButton>
                             <IconButton><FormatListBulleted/></IconButton>
