@@ -182,7 +182,9 @@ export default class EditorComponent extends Component {
                 this.checkHTMLSemantic();
             }
             else {
-                document.getElementById('accessibleDocument').focus();
+                const emptyParagraph = document.createElement('P');
+                emptyParagraph.innerHTML = 'Start typing&hellip;';
+                document.getElementById('accessibleDocument').appendChild(emptyParagraph);
             }
             this.toggleDrawer();
         });
