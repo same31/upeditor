@@ -13,11 +13,12 @@ injectTapEventPlugin();
 import './style.css';
 
 class EditorApp extends Component {
-    componentWillMount() {
-        const parsedHTML = parseHTML(example01DeuxColonnesHTML),
+    componentWillMount () {
+        const parsedHTML            = parseHTML(example01DeuxColonnesHTML),
               htmlSemanticErrorList = getHTMLSemanticErrorList(parsedHTML);
-        console.log(parsedHTML);
-        console.log(htmlSemanticErrorList);
+
+        console.log(htmlSemanticErrorList.filter(htmlSemanticError => htmlSemanticError.error)
+            .map(htmlSemanticError => htmlSemanticError.error));
     }
 
     render () {

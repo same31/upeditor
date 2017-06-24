@@ -18,20 +18,26 @@ export function getHTMLSemanticErrorList (parsedHTML = []) {
         error:       null
     };
 
-    const htmlSemanticErrorList = parsedHTML.map(htmlElement => {
-        let elementIntegrity         = { ...elementIntegrityModel };
-        elementIntegrity.htmlElement = htmlElement;
-        elementIntegrity.error       = null;
+    let maxAllowedSubtitleLevel = 1;
+
+    return parsedHTML.map(htmlElement => {
+        let elementIntegrity = { ...elementIntegrityModel, htmlElement };
 
         // Check integrity according to element tag name
         // =============================================
-        // Checks are done on H2+
+
+        // Check subtitle level integrity
         const subtitleLevel = _getElementSubtitleLevel(htmlElement);
         if (subtitleLevel) {
-            console.log(htmlElement.tagName, subtitleLevel);
+            if (subtitleLevel <= maxAllowedSubtitleLevel) {
+                maxAllowedSubtitleLevel = subtitleLevel + 1;
+            }
+            else if (subtitleLevel > maxAllowedSubtitleLevel) {
+                // Error
+                elementIntegrity.error = `Level ${subtitleLevel} title not allowed here, no previous level ${maxAllowedSubtitleLevel} title.`
+            }
         }
+
         return elementIntegrity;
     });
-
-    return htmlSemanticErrorList;
 }
