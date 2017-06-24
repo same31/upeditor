@@ -139,8 +139,6 @@ export default class EditorComponent extends Component {
      * @param event
      */
     setAnchor = (anchor, event) => {
-
-        event.preventDefault();
         let currentSelection = document.getSelection().anchorNode;
         if(currentSelection.nodeName === "#text"){
             currentSelection = currentSelection.parentNode;
@@ -153,7 +151,7 @@ export default class EditorComponent extends Component {
             parentNode.replaceChild(newNode, currentSelection);
         } else {
             currentSelection.appendChild(newNode);
-            newNode.focus();
+            newNode.innerHTML = "New Title";
         }
         this.checkHTMLSemantic();
     };
