@@ -3,9 +3,11 @@
  */
 import React, {Component} from 'react';
 import { Drawer, AppBar, List, ListItem, Paper,
-Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle,
-IconMenu, IconButton, MenuItem, FlatButton, RaisedButton, FontIcon } from 'material-ui';
+Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle, Menu,
+IconMenu, IconButton, MenuItem, FlatButton, RaisedButton, FontIcon, Popover } from 'material-ui';
 import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
+import Title from 'material-ui/svg-icons/editor/title';
+import InsertPhoto from 'material-ui/svg-icons/editor/insert-photo';
 
 const documentStyle = {
     margin: 20,
@@ -34,12 +36,29 @@ export default class EditorComponent extends Component {
         this.state = {
             open:false,
             content: { __html: "No document, select a document to edit in the main menu."},
-            title: "No document"
+            title: "No document",
+            openFileMenu: false,
         };
     }
     handleToggle() {
         this.setState({open: !this.state.open});
     }
+
+    handleOpenFileMenu = (event) => {
+        // This prevents ghost click.
+        event.preventDefault();
+
+        this.setState({
+            openFileMenu: true,
+            anchorEl: event.currentTarget,
+        });
+    };
+
+    handleRequestFileMenuClose = () => {
+        this.setState({
+            openFileMenu: false,
+        });
+    };
 
     editDocument (listItem) {
         this.setState({
@@ -67,23 +86,38 @@ export default class EditorComponent extends Component {
                 <Paper style={documentStyle} zDepth={1}>
                     <Toolbar>
                         <ToolbarGroup firstChild={true}>
-
+                            <IconMenu
+                                iconButtonElement={<IconButton><Title /></IconButton>}
+                                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                                targetOrigin={{horizontal: 'left', vertical: 'bottom'}}>
+                                <MenuItem primaryText="Title 1" />
+                                <MenuItem primaryText="Title 2" />
+                                <MenuItem primaryText="Title 3" />
+                            </IconMenu>
+                            <InsertPhoto />
                         </ToolbarGroup>
                         <ToolbarGroup>
                             <ToolbarTitle text={this.state.title} />
                             <ToolbarSeparator />
-                                <IconMenu iconButtonElement={<FontIcon className="mui-"></FontIcon>}
-                                    anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-                                    targetOrigin={{horizontal: 'left', vertical: 'top'}}>
-                                    <MenuItem primaryText="Save" />
-                                    <MenuItem primaryText="Delete" />
-                                </IconMenu>
                             <FlatButton
                                 label="File"
                                 className={"toolbar-flat-button"}
+                                onTouchTap={this.handleOpenFileMenu}
                                 primary={true}
-                                icon={<IconButton><InsertDriveFile /></IconButton>}
+                                icon={<InsertDriveFile />}
                             />
+                            <Popover
+                                open={this.state.openFileMenu}
+                                anchorEl={this.state.anchorEl}
+                                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                onRequestClose={this.handleRequestFileMenuClose}
+                            >
+                                <Menu>
+                                    <MenuItem primaryText="Save document" />
+                                    <MenuItem primaryText="Delete document" />
+                                </Menu>
+                            </Popover>
                         </ToolbarGroup>
                     </Toolbar>
                     <div contentEditable={true} dangerouslySetInnerHTML={this.state.content}/>
