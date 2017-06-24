@@ -13,6 +13,7 @@ export function getHTMLSemanticErrorList (htmlCollection = []) {
 
     const elementIntegrityModel = {
         htmlElement: null,
+        tagName:     null,
         error:       null,
         errorLevel:  null,
     };
@@ -24,27 +25,32 @@ export function getHTMLSemanticErrorList (htmlCollection = []) {
 
         // Transform text node in P tag
         if (!htmlElement.tagName) {
-            const newChild = document.createElement('P');
+            const newChild     = document.createElement('P');
             newChild.className = 'text';
             newChild.innerHTML = htmlElement.textContent;
             htmlElement.parentNode.replaceChild(newChild, htmlElement);
             elementIntegrity.htmlElement = newChild;
         }
-        // Check allowed tags
-        else if (!~allowedTagList.indexOf(htmlElement.tagName)) {
-            elementIntegrity.errorLevel = 'warning';
-            elementIntegrity.error = `Unsupported tag name ${htmlElement.tagName}`;
-        }
-        // Check title level integrity
         else {
-            const subtitleLevel = _getElementSubtitleLevel(htmlElement);
-            if (subtitleLevel) {
-                if (subtitleLevel <= maxAllowedSubtitleLevel) {
-                    maxAllowedSubtitleLevel = subtitleLevel + 1;
-                }
-                else if (subtitleLevel > maxAllowedSubtitleLevel) {
-                    elementIntegrity.errorLevel = 'error';
-                    elementIntegrity.error = `Level ${subtitleLevel} title not allowed here, no previous level ${maxAllowedSubtitleLevel} title.`
+            // Add tag name info
+            htmlElement.setAttribute('data-tag-name', htmlElement.tagName.toLowerCase());
+
+            // Check allowed tags
+            if (!~allowedTagList.indexOf(htmlElement.tagName)) {
+                elementIntegrity.errorLevel = 'warning';
+                elementIntegrity.error      = `Unsupported tag name ${htmlElement.tagName}`;
+            }
+            // Check title level integrity
+            else {
+                const subtitleLevel = _getElementSubtitleLevel(htmlElement);
+                if (subtitleLevel) {
+                    if (subtitleLevel <= maxAllowedSubtitleLevel) {
+                        maxAllowedSubtitleLevel = subtitleLevel + 1;
+                    }
+                    else if (subtitleLevel > maxAllowedSubtitleLevel) {
+                        elementIntegrity.errorLevel = 'error';
+                        elementIntegrity.error      = `Level ${subtitleLevel} title not allowed here, no previous level ${maxAllowedSubtitleLevel} title.`
+                    }
                 }
             }
         }

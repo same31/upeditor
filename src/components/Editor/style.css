@@ -16,6 +16,24 @@
     font-style: italic;
 }
 
+.document-edit [data-tag-name]:hover:after {
+    content: attr(data-tag-name);
+    position: absolute;
+    left: 16px;
+    margin: -1em 0 0 0;
+    padding: 1px 3px;
+    font-size: 12px;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.870588);
+    background-color: rgb(255, 255, 255);
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    box-sizing: border-box; font-family: Roboto, sans-serif;
+    box-shadow: rgba(0, 0, 0, 0.156863) 0 3px 10px, rgba(0, 0, 0, 0.227451) 0 3px 10px;
+    border-radius: 2px;
+    text-align: center;
+    display: block;
+}
+
 .document-edit [data-error-level] {
     padding: 5px;
     outline: none;
