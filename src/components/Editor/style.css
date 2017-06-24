@@ -3,5 +3,14 @@
 
 .document-edit {
     text-align: justify;
-    padding-left: 10px;
+    padding: 10px;
+}
+
+.info-div {
+    background-color: #B2EBF2;
+    color: #006064;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 5px;
+    font-style: italic;
 }

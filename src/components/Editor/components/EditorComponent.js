@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import {
     Drawer, AppBar, List, ListItem, Paper,
     Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle, Menu,
-    IconMenu, IconButton, MenuItem, FlatButton, Popover
+    IconMenu, IconButton, MenuItem, FlatButton, Popover, Subheader
 } from 'material-ui';
 import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
 import Title from 'material-ui/svg-icons/editor/title';
@@ -44,7 +44,9 @@ export default class EditorComponent extends Component {
         ];
         this.state     = {
             open:         false,
-            content:      { __html: "No document, select a document to edit in the main menu." },
+            content:      { __html: "<div class='info-div" +
+            "' contenteditable='false'>" +
+            "No document, select a document to edit in the main menu.</div>" },
             title:        "No document",
             openFileMenu: false,
             languageMenu: false
@@ -120,6 +122,7 @@ export default class EditorComponent extends Component {
                     open={this.state.open}
                     onRequestChange={(open) => this.setState({ open })}>
                     <List>
+                        <Subheader>Documents available for edition</Subheader>
                         {this.htmlInput.map(listItem => <ListItem key={"htmlInput."+listItem.title} primaryText={listItem.title} leftIcon={<InsertDriveFile />} onClick={this.editDocument.bind(this, listItem)} />)}
                     </List>
                 </Drawer>
