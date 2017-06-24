@@ -11,6 +11,8 @@ import {
 import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
 import Title from 'material-ui/svg-icons/editor/title';
 import InsertPhoto from 'material-ui/svg-icons/editor/insert-photo';
+import FormatListBulleted from 'material-ui/svg-icons/editor/format-list-bulleted';
+import FormatListNumbered from 'material-ui/svg-icons/editor/format-list-numbered';
 import Intel from '../Internalisation';
 //example of us Intel -> Internalisation.getMsg("btnSave");
 import ActionLanguage from 'material-ui/svg-icons/action/language';
@@ -46,6 +48,7 @@ export default class EditorComponent extends Component {
             content:      { __html: "No document, select a document to edit in the main menu." },
             title:        "No document",
             openFileMenu: false,
+            languageMenu: false
         };
     }
 
@@ -69,8 +72,20 @@ export default class EditorComponent extends Component {
         });
     };
 
-    changeLanguage = () => {
+    openLanguageMenu = (event) => {
+        // This prevents ghost click.
+        event.preventDefault();
 
+        this.setState({
+            languageMenu: true,
+            anchorEl:     event.currentTarget,
+        });
+    };
+
+    handleLanguageMenuClose = () => {
+        this.setState({
+            languageMenu: false,
+        });
     };
 
     checkHTMLSemantic = (htmlCollection) => {
@@ -117,20 +132,36 @@ export default class EditorComponent extends Component {
                 </Drawer>
 
                 <AppBar   title="UpEditor"
-                          onLeftIconButtonTouchTap={this.toggleDrawer.bind(this)} iconElementRight={<IconButton><ActionLanguage /> Language</IconButton>}
-                          onRightIconButtonTouchTap={this.changeLanguage}/>
+                          onLeftIconButtonTouchTap={this.toggleDrawer.bind(this)} iconElementRight={<IconButton><ActionLanguage /></IconButton>}
+                          onRightIconButtonTouchTap={this.openLanguageMenu}/>
+                <Popover
+                    open={this.state.languageMenu}
+                    anchorEl={this.state.anchorEl}
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                    onRequestClose={this.handleLanguageMenuClose}
+                >
+                    <Menu>
+                        <MenuItem primaryText="English"/>
+                        <MenuItem primaryText="French"/>
+                        <MenuItem primaryText="Spanish"/>
+                    </Menu>
+                </Popover>
                 <Paper style={documentStyle} zDepth={1}>
                     <Toolbar>
                         <ToolbarGroup firstChild={true}>
                             <IconMenu
                                 iconButtonElement={<IconButton><Title /></IconButton>}
-                                anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                                targetOrigin={{ horizontal: 'left', vertical: 'bottom' }}>
-                                <MenuItem primaryText="Title 1"/>
-                                <MenuItem primaryText="Title 2"/>
-                                <MenuItem primaryText="Title 3"/>
+                                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+                                targetOrigin={{horizontal: 'left', vertical: 'bottom'}}>
+                                <MenuItem primaryText={<h1>Title 1</h1>} />
+                                <MenuItem primaryText={<h2>Title 2</h2>} />
+                                <MenuItem primaryText={<h3>Title 3</h3>} />
                             </IconMenu>
-                            <InsertPhoto />
+                            <IconButton><FormatListNumbered/></IconButton>
+                            <IconButton><FormatListBulleted/></IconButton>
+                            <ToolbarSeparator/>
+                            <IconButton><InsertPhoto /></IconButton>
                         </ToolbarGroup>
                         <ToolbarGroup>
                             <ToolbarTitle text={this.state.title}/>
