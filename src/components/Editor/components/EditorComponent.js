@@ -45,6 +45,7 @@ export default class EditorComponent extends Component {
             content:      { __html: "No document, select a document to edit in the main menu." },
             title:        "No document",
             openFileMenu: false,
+            languageMenu: false
         };
     }
 
@@ -68,8 +69,20 @@ export default class EditorComponent extends Component {
         });
     };
 
-    changeLanguage = () => {
+    openLanguageMenu = (event) => {
+        // This prevents ghost click.
+        event.preventDefault();
 
+        this.setState({
+            languageMenu: true,
+            anchorEl:     event.currentTarget,
+        });
+    };
+
+    handleLanguageMenuClose = () => {
+        this.setState({
+            languageMenu: false,
+        });
     };
 
     checkHTMLSemantic = (htmlCollection) => {
@@ -110,8 +123,21 @@ export default class EditorComponent extends Component {
                 </Drawer>
 
                 <AppBar   title="UpEditor"
-                          onLeftIconButtonTouchTap={this.toggleDrawer.bind(this)} iconElementRight={<IconButton><ActionLanguage /> Language</IconButton>}
-                          onRightIconButtonTouchTap={this.changeLanguage}/>
+                          onLeftIconButtonTouchTap={this.toggleDrawer.bind(this)} iconElementRight={<IconButton><ActionLanguage /></IconButton>}
+                          onRightIconButtonTouchTap={this.openLanguageMenu}/>
+                <Popover
+                    open={this.state.languageMenu}
+                    anchorEl={this.state.anchorEl}
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                    onRequestClose={this.handleLanguageMenuClose}
+                >
+                    <Menu>
+                        <MenuItem primaryText="English"/>
+                        <MenuItem primaryText="French"/>
+                        <MenuItem primaryText="Spanish"/>
+                    </Menu>
+                </Popover>
                 <Paper style={documentStyle} zDepth={1}>
                     <Toolbar>
                         <ToolbarGroup firstChild={true}>
