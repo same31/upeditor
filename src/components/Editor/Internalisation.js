@@ -1,6 +1,6 @@
-import localeFR from './fr-FR.js'
-import localeEN from './en-EN.js'
-import localeES from './es-ES.js'
+import localeFR from './languages/fr-FR.js'
+import localeEN from './languages/en-EN.js'
+import localeES from './languages/es-ES.js'
 
 var locales = {
     'fr-FR': localeFR,
@@ -9,17 +9,20 @@ var locales = {
 
 };
 
-var currentLangue = 'es-ES';
+export default function (language) {
+    var currentLanguage = language;
 
-export default {
+    return {
+
+        locales: locales,
         setLangue: function (langue) {
-            currentLangue = langue;
+            currentLanguage = langue;
         },
         getMsg: function (key, data) {
             var result = key.split('.').reduce((prevResult, subKey) => {
                     var result = prevResult[subKey];
                     return typeof result === 'undefined' ? key : result;
-                }, locales[currentLangue].messages),
+                }, locales[currentLanguage].messages),
                 countKey,
                 count,
                 pluralKey,
@@ -37,7 +40,7 @@ export default {
                     if (count > 1) {
                         pluralKey = 'many';
                     }
-                    else if (parseInt(count) === 1 || !count && typeof result[countKey].zero === 'undefined') {
+                    else if (parseInt(count) === 1 || (!count && typeof result[countKey].zero === 'undefined')) {
                         pluralKey = 'one';
                     }
                     else {
@@ -61,6 +64,7 @@ export default {
         },
 
         msgExists: function (key) {
-            return key.split('.').every(key => locales[currentLangue].messages[key]);
+            return key.split('.').every(key => locales[currentLanguage].messages[key]);
         }
-    };
+    }
+}

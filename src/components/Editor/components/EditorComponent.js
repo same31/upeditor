@@ -11,10 +11,11 @@ import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
 import Title from 'material-ui/svg-icons/editor/title';
 import InsertPhoto from 'material-ui/svg-icons/editor/insert-photo';
 import Intel from '../Internalisation';
-//example of us Intel -> Internalisation.getMsg("btnSave");
 import ActionLanguage from 'material-ui/svg-icons/action/language';
 import {parseHTML, getHTMLSemanticErrorList} from '../htmlUtils';
 import htmlOKContent from '../input/Example_01_deux_colonnes.html';
+import Internalisation from '../Internalisation.js';
+
 
 const documentStyle = {
     margin:    20,
@@ -26,7 +27,30 @@ export default class EditorComponent extends Component {
 
     constructor (props) {
         super(props);
-        this.htmlInput = [
+        this.htmlInput = [];
+        this.state     = {
+            open:         false,
+            content:      {__html : ''},
+            title:        '',
+            openFileMenu: false,
+            languageMenu: false,
+            language : 'fr-FR',
+            intel : null
+        };
+    }
+
+
+    componentWillMount() {
+        this.setLanguage(this.state.language);
+    }
+
+    setLanguage (language) {
+        const intel = Internalisation(language);
+        this.setState({
+            intel: intel,
+            content: { __html: intel.getMsg("noDocumentLong") },
+            title: intel.getMsg("noDocument")
+        }, () => {this.htmlInput = [
             {
                 title:   "HTML OK",
                 content: { __html: htmlOKContent }
@@ -36,17 +60,10 @@ export default class EditorComponent extends Component {
                 content: { __html: "<h2>HELLO WORLD</h2><p>A stepping stone to the ultimate success</p>" }
             },
             {
-                title:   "Empty Document",
+                title:   intel.getMsg("emptyDocument"),
                 content: { __html: "" }
             }
-        ];
-        this.state     = {
-            open:         false,
-            content:      { __html: "No document, select a document to edit in the main menu." },
-            title:        "No document",
-            openFileMenu: false,
-            languageMenu: false
-        };
+        ];})
     }
 
     toggleDrawer () {
@@ -108,8 +125,15 @@ export default class EditorComponent extends Component {
             this.toggleDrawer();
         });
     }
+    modifyLanguage (newLanguage) {
+        if(this.state.intel.locales[newLanguage] !== undefined){
+            this.setLanguage(newLanguage);
+            this.handleLanguageMenuClose();
+        }
+    }
 
     render () {
+        const getMsg = this.state.intel.getMsg;
 
         return (
             <div>
@@ -133,9 +157,9 @@ export default class EditorComponent extends Component {
                     onRequestClose={this.handleLanguageMenuClose}
                 >
                     <Menu>
-                        <MenuItem primaryText="English"/>
-                        <MenuItem primaryText="French"/>
-                        <MenuItem primaryText="Spanish"/>
+                        <MenuItem primaryText={getMsg("english")} onClick={this.modifyLanguage.bind(this, 'en-EN')}/>
+                        <MenuItem primaryText={getMsg("french")} onClick={this.modifyLanguage.bind(this, 'fr-FR')}/>
+                        <MenuItem primaryText={getMsg("spanish")} onClick={this.modifyLanguage.bind(this, 'es-ES')}/>
                     </Menu>
                 </Popover>
                 <Paper style={documentStyle} zDepth={1}>
