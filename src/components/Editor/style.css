@@ -18,9 +18,7 @@
 
 .document-edit [data-error-message] {
     padding: 5px;
-    border: 1px solid #dadada;
-    border-radius: 5px;
-    border-color: #ed6b85;
-    box-shadow: 0 0 10px #ed6b85;
+    border-left: 5px solid #B71C1C;
+    background-color: #E57373;
     outline: none;
 }

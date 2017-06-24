@@ -6,7 +6,8 @@ import ReactDOM from 'react-dom';
 import {
     Drawer, AppBar, List, ListItem, Paper,
     Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle, Menu,
-    IconMenu, IconButton, MenuItem, FlatButton, Popover, Subheader
+    IconMenu, IconButton, MenuItem, FlatButton, Popover, Subheader,
+    Snackbar
 } from 'material-ui';
 import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
 import Title from 'material-ui/svg-icons/editor/title';
@@ -50,9 +51,31 @@ export default class EditorComponent extends Component {
             "No document, select a document to edit in the main menu.</div>" },
             title:        "No document",
             openFileMenu: false,
-            languageMenu: false
+            languageMenu: false,
+            errorSelected: false,
+            errorMessage: ""
         };
     }
+
+    clickHandler = (e) => {
+        // Getting an array of DOM elements
+        // Then finding which element was clicked
+        const nodes = Array.prototype.slice.call( e.currentTarget.children );
+        let index = e.target;
+        const errorMessage = index.getAttribute("data-error-message");
+        if(errorMessage) {
+            this.setState({
+                errorSelected: true,
+                errorMessage: errorMessage
+            });
+        } else {
+            this.setState({
+                errorSelected: false,
+                errorMessage: ""
+            });
+        }
+    };
+
 
     toggleDrawer () {
         this.setState({ open: !this.state.open });
@@ -190,7 +213,10 @@ export default class EditorComponent extends Component {
                             </Popover>
                         </ToolbarGroup>
                     </Toolbar>
-                    <div id="accessibleDocument" className="document-edit" contentEditable={true} dangerouslySetInnerHTML={this.state.content}/>
+                    <div id="accessibleDocument" className="document-edit"
+                         contentEditable={true} dangerouslySetInnerHTML={this.state.content}
+                         onClick={this.clickHandler}/>
+                    <Snackbar message={"Error : "+ this.state.errorMessage} open={this.state.errorSelected}/>
                 </Paper>
             </div>
         );
