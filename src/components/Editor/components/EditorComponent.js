@@ -4,11 +4,11 @@
 import React, {Component} from 'react';
 import { Drawer, AppBar, List, ListItem, Paper,
 Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle, Menu,
-IconMenu, IconButton, MenuItem, FlatButton, RaisedButton, FontIcon, Popover } from 'material-ui';
+IconMenu, IconButton, MenuItem, FlatButton, Popover } from 'material-ui';
 import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
 import Title from 'material-ui/svg-icons/editor/title';
 import InsertPhoto from 'material-ui/svg-icons/editor/insert-photo';
-
+import ActionLanguage from 'material-ui/svg-icons/action/language';
 import {parseHTML, getHTMLSemanticErrorList} from '../htmlUtils';
 import htmlKOContent from '../input/Example_01_deux_colonnes.html';
 
@@ -65,6 +65,10 @@ export default class EditorComponent extends Component {
         });
     };
 
+    changeLanguage = () => {
+
+    };
+
     editDocument (listItem) {
         this.setState({
             ...listItem
@@ -90,13 +94,17 @@ export default class EditorComponent extends Component {
                     open={this.state.open}
                     onRequestChange={(open) => this.setState({open})}>
                     <List>
-                        {this.htmlInput.map(listItem => <ListItem key={"htmlInput."+listItem.title} primaryText={listItem.title} leftIcon={<InsertDriveFile />} onClick={this.editDocument.bind(this, listItem)} />)}
-
+                        {this.htmlInput.map(listItem =>
+                            <ListItem key={"htmlInput."+listItem.title}
+                                      primaryText={listItem.title} leftIcon={<InsertDriveFile />}
+                                      onClick={this.editDocument.bind(this, listItem)} />)}
                     </List>
                 </Drawer>
 
                 <AppBar   title="UpEditor"
-                          onLeftIconButtonTouchTap={this.toggleDrawer.bind(this)} />
+                          onLeftIconButtonTouchTap={this.toggleDrawer.bind(this)}
+                          iconElementRight={<IconButton><ActionLanguage /> Language</IconButton>}
+                          onRightIconButtonTouchTap={this.changeLanguage}/>
                 <Paper style={documentStyle} zDepth={1}>
                     <Toolbar>
                         <ToolbarGroup firstChild={true}>
@@ -134,7 +142,7 @@ export default class EditorComponent extends Component {
                             </Popover>
                         </ToolbarGroup>
                     </Toolbar>
-                    <div contentEditable={true} dangerouslySetInnerHTML={this.state.content}/>
+                    <div className="document-edit" contentEditable={true} dangerouslySetInnerHTML={this.state.content}/>
                 </Paper>
             </div>
         );
