@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import $ from 'jquery';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import EditorComponent from './components/EditorComponent';
