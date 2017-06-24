@@ -1,18 +1,14 @@
-import $ from 'jquery';
-
-export function parseHTML (htmlContent) {
-    return $.parseHTML(htmlContent);
-}
-
 function _getElementSubtitleLevel (htmlElement) {
     if (!htmlElement.tagName) {
         return;
     }
-    const levelMatches = htmlElement.tagName.match(/^H([2-9]\d*)$/);
+    const levelMatches = htmlElement.tagName.match(/^H([1-9]\d*)$/);
     return levelMatches && +levelMatches[1];
 }
 
-export function getHTMLSemanticErrorList (parsedHTML = []) {
+export function getHTMLSemanticErrorList (htmlCollection = []) {
+    htmlCollection = [].slice.call(htmlCollection);
+
     const elementIntegrityModel = {
         htmlElement: null,
         error:       null
@@ -20,7 +16,7 @@ export function getHTMLSemanticErrorList (parsedHTML = []) {
 
     let maxAllowedSubtitleLevel = 1;
 
-    return parsedHTML.map(htmlElement => {
+    return htmlCollection.map(htmlElement => {
         let elementIntegrity = { ...elementIntegrityModel, htmlElement };
 
         // Check integrity according to element tag name
