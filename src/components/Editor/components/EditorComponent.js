@@ -181,6 +181,8 @@ export default class EditorComponent extends Component {
         if (FileReader && files && files.length) {
             var fr = new FileReader();
             fr.onload = function () {
+
+                //TODO it will be in an other div to put this img, but the BASE64 is in fr.result
                 document.getElementById('imgShowed').src = fr.result;
             };
             fr.readAsDataURL(files[0]);
