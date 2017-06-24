@@ -68,7 +68,13 @@ export default class EditorComponent extends Component {
 
     componentWillMount () {
         this.setLanguage(this.state.language);
+
+        document.addEventListener('onPaste', this.checkHTMLSem);
     }
+
+    handlePaste = ( ) => {
+        this.checkHTMLSemantic(document.getElementById('accessibleDocument').childNodes);
+    };
 
     setLanguage (language) {
         const intel = Internalisation(language);
@@ -305,7 +311,7 @@ export default class EditorComponent extends Component {
                             </Popover>
                         </ToolbarGroup>
                     </Toolbar>
-                    <div id="accessibleDocument" className="document-edit"
+                    <div id="accessibleDocument" className="document-edit" onPaste={this.handlePaste}
                          contentEditable={true} dangerouslySetInnerHTML={this.state.content}
                          onClick={this.clickHandler}/>
                     <Snackbar message={"Error : " + this.state.errorMessage} open={this.state.errorSelected}/>
