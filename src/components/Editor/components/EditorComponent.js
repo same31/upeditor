@@ -42,7 +42,7 @@ export default class EditorComponent extends Component {
             languageMenu: false,
             errorSelected: false,
             errorMessage: "",
-            language : 'fr-FR',
+            language : 'en-EN',
             intel : null
         };
     }
@@ -179,7 +179,7 @@ export default class EditorComponent extends Component {
                     open={this.state.open}
                     onRequestChange={(open) => this.setState({ open })}>
                     <List>
-                        <Subheader>Documents available for edition</Subheader>
+                        <Subheader>{getMsg("titreSelectDocument")}</Subheader>
                         {this.htmlInput.map(listItem => <ListItem key={"htmlInput."+listItem.title} primaryText={listItem.title} leftIcon={<InsertDriveFile />} onClick={this.editDocument.bind(this, listItem)} />)}
                     </List>
                 </Drawer>
@@ -220,7 +220,7 @@ export default class EditorComponent extends Component {
                             <ToolbarTitle text={this.state.title}/>
                             <ToolbarSeparator />
                             <FlatButton
-                                label="File"
+                                label={getMsg("file")}
                                 className={"toolbar-flat-button"}
                                 onTouchTap={this.handleOpenFileMenu}
                                 primary={true}

@@ -9,6 +9,8 @@ export default {
   'noDocument' : 'No document',
   'noDocumentLong' : 'No document, select a document to edit in the main menu.',
 
+  'titreSelectDocument' : 'Documents for edition',
+
   'emptyDocument': 'Empty Document',
 
 
@@ -20,6 +22,8 @@ export default {
   'title3': 'Title 3',
   'title4': 'Title 4',
   'title5': 'Title 5',
-  'title6': 'Title 6'
+  'title6': 'Title 6',
+
+  'file': 'File'
  }
 }
