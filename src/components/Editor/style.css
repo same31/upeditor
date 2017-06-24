@@ -16,9 +16,14 @@
     font-style: italic;
 }
 
-.document-edit [data-error-message] {
+.document-edit [data-error-level] {
     padding: 5px;
+    outline: none;
     border-left: 5px solid #B71C1C;
     background-color: #E57373;
-    outline: none;
+}
+
+.document-edit [data-error-level="warning"] {
+    border-left-color: #b78633;
+    background-color: #e5d3a6;
 }

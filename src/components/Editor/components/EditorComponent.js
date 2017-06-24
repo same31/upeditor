@@ -87,7 +87,7 @@ export default class EditorComponent extends Component {
             },
             {
                 title:   "HTML KO",
-                content: { __html: "<h2>HELLO WORLD</h2><p>A stepping stone to the ultimate success</p>" }
+                content: { __html: "<h2>HELLO WORLD</h2><p>A stepping stone to the ultimate success</p><div>Say hello to my little DIV</div>" }
             },
             {
                 title:   intel.getMsg("emptyDocument"),
@@ -136,7 +136,8 @@ export default class EditorComponent extends Component {
         const htmlSemanticErrorList = getHTMLSemanticErrorList(htmlCollection);
 
         htmlSemanticErrorList.forEach(htmlSemanticError => {
-            if (htmlSemanticError.error) {
+            if (htmlSemanticError.errorLevel) {
+                htmlSemanticError.htmlElement.setAttribute('data-error-level', htmlSemanticError.errorLevel);
                 htmlSemanticError.htmlElement.setAttribute('data-error-message', htmlSemanticError.error);
             }
         });
