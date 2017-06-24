@@ -49,19 +49,19 @@ export default class EditorComponent extends Component {
     clickHandler = (e) => {
         // Getting an array of DOM elements
         // Then finding which element was clicked
-        const index = e.target,
+        const index        = e.target,
               errorMessage = index.getAttribute("data-error-message");
-        if(errorMessage) {
+        if (errorMessage) {
             this.setState({
                 errorSelected: true,
                 errorMessage:  errorMessage,
-                currentNode: index
+                currentNode:   index
             });
         } else {
             this.setState({
                 errorSelected: false,
                 errorMessage:  "",
-                currentNode: index
+                currentNode:   index
             });
         }
     };
@@ -143,11 +143,11 @@ export default class EditorComponent extends Component {
 
         event.preventDefault();
         let currentSelection = document.getSelection().anchorNode;
-        if(currentSelection.nodeName === "#text"){
+        if (currentSelection.nodeName === "#text") {
             currentSelection = currentSelection.parentNode;
         }
         let newNode = document.createElement(anchor);
-        if(currentSelection.nodeName !== "DIV") {
+        if (currentSelection.nodeName !== "DIV") {
             let parentNode = currentSelection.parentNode;
             newNode.setAttribute("contentEditable", "true");
             newNode.innerHTML = currentSelection.innerHTML;
@@ -266,8 +266,8 @@ export default class EditorComponent extends Component {
                         <ToolbarGroup firstChild={true}>
                             <IconMenu
                                 iconButtonElement={<IconButton><Title /></IconButton>}
-                                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                                targetOrigin={{horizontal: 'left', vertical: 'bottom'}}>
+                                anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                                targetOrigin={{ horizontal: 'left', vertical: 'bottom' }}>
                                 <MenuItem primaryText={<h1>h1.Title 1</h1>} onTouchTap={this.setAnchor.bind(this, "h1")}/>
                                 <MenuItem primaryText={<h2>h2.Title 2</h2>} onTouchTap={this.setAnchor.bind(this, "h2")}/>
                                 <MenuItem primaryText={<h3>h3.Title 3</h3>} onTouchTap={this.setAnchor.bind(this, "h3")}/>
