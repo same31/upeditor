@@ -114,9 +114,9 @@ export default class EditorComponent extends Component {
                                 iconButtonElement={<IconButton><Title /></IconButton>}
                                 anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                                 targetOrigin={{horizontal: 'left', vertical: 'bottom'}}>
-                                <MenuItem primaryText="Title 1" />
-                                <MenuItem primaryText="Title 2" />
-                                <MenuItem primaryText="Title 3" />
+                                <MenuItem primaryText={<h1>Title 1</h1>} />
+                                <MenuItem primaryText={<h2>Title 2</h2>} />
+                                <MenuItem primaryText={<h3>Title 3</h3>} />
                             </IconMenu>
                             <InsertPhoto />
                         </ToolbarGroup>
