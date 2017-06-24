@@ -23,7 +23,8 @@ export default {
   'title5': 'Título 5',
   'title6': 'Título 6',
 
-  'file': 'Archivo'
+  'file': 'Archivo',
+  'functionalityNotWorking': 'Esta funcionalidad no funciona en su navegador, por favor utilice uno más moderno cómo Chrome'
 
  }
 }

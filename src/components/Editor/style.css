@@ -22,3 +22,7 @@
     background-color: #E57373;
     outline: none;
 }
+
+#chooseFileModal {
+ visibility: hidden
+}

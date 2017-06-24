@@ -24,7 +24,7 @@ import Internalisation from '../Internalisation.js';
 const documentStyle = {
     margin:    20,
     textAlign: 'center',
-    display:   'block',
+    display:   'block'
 };
 
 export default class EditorComponent extends Component {
@@ -106,13 +106,13 @@ export default class EditorComponent extends Component {
 
         this.setState({
             openFileMenu: true,
-            anchorEl:     event.currentTarget,
+            anchorEl:     event.currentTarget
         });
     };
 
     handleRequestFileMenuClose = () => {
         this.setState({
-            openFileMenu: false,
+            openFileMenu: false
         });
     };
 
@@ -122,13 +122,13 @@ export default class EditorComponent extends Component {
 
         this.setState({
             languageMenu: true,
-            anchorEl:     event.currentTarget,
+            anchorEl:     event.currentTarget
         });
     };
 
     handleLanguageMenuClose = () => {
         this.setState({
-            languageMenu: false,
+            languageMenu: false
         });
     };
 
@@ -165,6 +165,34 @@ export default class EditorComponent extends Component {
         if(this.state.intel.locales[newLanguage] !== undefined){
             this.setLanguage(newLanguage);
             this.handleLanguageMenuClose();
+        }
+    }
+
+    clickInsertPhoto () {
+        document.getElementById("chooseFileModal").click();
+    }
+
+    onFileSelected (event) {
+        var tgt = event.target || window.event.srcElement,
+            files = tgt.files;
+
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                //document.getElementById('imgShowed').src = fr.result;
+            };
+            fr.readAsDataURL(files[0]);
+        }
+
+        // Not supported
+        else {
+            this.setState({
+                errorSelected: true,
+                errorMessage: this.state.intel.getMsg("functionalityNotWorking")
+            });
+            // fallback -- perhaps submit the input to an iframe and temporarily store
+            // them on the server until the user's session ends.
         }
     }
 
@@ -213,7 +241,11 @@ export default class EditorComponent extends Component {
                             <IconButton><FormatListNumbered/></IconButton>
                             <IconButton><FormatListBulleted/></IconButton>
                             <ToolbarSeparator/>
-                            <IconButton><InsertPhoto /></IconButton>
+                            <IconButton onClick={this.clickInsertPhoto} ><InsertPhoto />
+                                <input id="chooseFileModal" style="visibility: hidden" type="file" accept="image/*" onChange={this.onFileSelected} />
+                                { /*TO DELETE THIS LINE IMG, ONLY FOR TEST*/}
+                                <img id="imgShowed"></img>
+                                </IconButton>
                         </ToolbarGroup>
                         <ToolbarGroup>
                             <ToolbarTitle text={this.state.title}/>

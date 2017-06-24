@@ -24,6 +24,7 @@ export default {
   'title5': 'Title 5',
   'title6': 'Title 6',
 
-  'file': 'File'
+  'file': 'File',
+  'functionalityNotWorking': 'This functionality does not work with your explorer, please use a new one like Chrome'
  }
 }
