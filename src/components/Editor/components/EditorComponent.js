@@ -181,7 +181,7 @@ export default class EditorComponent extends Component {
         if (FileReader && files && files.length) {
             var fr = new FileReader();
             fr.onload = function () {
-                //document.getElementById('imgShowed').src = fr.result;
+                document.getElementById('imgShowed').src = fr.result;
             };
             fr.readAsDataURL(files[0]);
         }
