@@ -1,0 +1,28 @@
+{
+    "locales":  "fr-FR",
+    "messages": {
+        "french":              "Français",
+        "english":             "Anglais",
+        "spanish":             "Espagnol",
+        "noDocument":          "Pas de document",
+        "noDocumentLong":      "Pas de document, sélectionner un document pour l'éditer dans le menu principal.",
+        "titreSelectDocument": "Documents pour l'édition",
+        "emptyDocument":       "Document vide",
+        "btnOk":               "Ok",
+        "btnSave":             "Sauvegarder",
+        "title":               "Titre",
+        "title1":              "Titre 1",
+        "title2":              "Titre 2",
+        "title3":              "Titre 3",
+        "title4":              "Titre 4",
+        "title5":              "Titre 5",
+        "title6":              "Titre 6",
+        "file":                "Fichier",
+        "errors":              {
+            "functionalityNotWorking": "Cette fonctionalité ne marche pas sur votre navigateur, veuillez-en utiliser un autre plus recent.",
+            "unsupportedTagName": "Balise ':tagName:' non supportée.",
+            "titleLevelNotAllowed": "Title de niveau :subtitleLevel: non autorisé ici, pas de précédent titre de niveau :maxAllowedSubtitleLevel:."
+        },
+        "startTyping":         "Cliquer ici pour commencer à taper&hellip;"
+    }
+}
