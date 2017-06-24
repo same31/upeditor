@@ -1,6 +1,7 @@
 /** Roboto font for material-ui **/
 @import url('https://fonts.googleapis.com/css?familnpm runy=Roboto:300,400,500');
 
-.toolbar-flat-button {
-
+.document-edit {
+    text-align: justify;
+    padding-left: 10px;
 }

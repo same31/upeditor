@@ -5,12 +5,14 @@ import React, {Component} from 'react';
 import {
     Drawer, AppBar, List, ListItem, Paper,
     Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle, Menu,
-    IconMenu, IconButton, MenuItem, FlatButton, RaisedButton, FontIcon, Popover
+    IconMenu, IconButton, MenuItem, FlatButton, Popover
 } from 'material-ui';
 import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
 import Title from 'material-ui/svg-icons/editor/title';
 import InsertPhoto from 'material-ui/svg-icons/editor/insert-photo';
-
+import Intel from '../Internalisation';
+//example of us Intel -> Internalisation.getMsg("btnSave");
+import ActionLanguage from 'material-ui/svg-icons/action/language';
 import {parseHTML, getHTMLSemanticErrorList} from '../htmlUtils';
 import htmlOKContent from '../input/Example_01_deux_colonnes.html';
 
@@ -66,6 +68,10 @@ export default class EditorComponent extends Component {
         });
     };
 
+    changeLanguage = () => {
+
+    };
+
     checkHTMLSemantic = (htmlCollection) => {
         const htmlSemanticErrorList = getHTMLSemanticErrorList(htmlCollection);
 
@@ -99,15 +105,13 @@ export default class EditorComponent extends Component {
                     open={this.state.open}
                     onRequestChange={(open) => this.setState({ open })}>
                     <List>
-                        {this.htmlInput.map(listItem => <ListItem key={"htmlInput." + listItem.title} primaryText={listItem.title}
-                                                                  leftIcon={<InsertDriveFile />}
-                                                                  onClick={this.editDocument.bind(this, listItem)}/>)}
-
+                        {this.htmlInput.map(listItem => <ListItem key={"htmlInput."+listItem.title} primaryText={listItem.title} leftIcon={<InsertDriveFile />} onClick={this.editDocument.bind(this, listItem)} />)}
                     </List>
                 </Drawer>
 
-                <AppBar title="UpEditor"
-                        onLeftIconButtonTouchTap={this.toggleDrawer.bind(this)}/>
+                <AppBar   title="UpEditor"
+                          onLeftIconButtonTouchTap={this.toggleDrawer.bind(this)} iconElementRight={<IconButton><ActionLanguage /> Language</IconButton>}
+                          onRightIconButtonTouchTap={this.changeLanguage}/>
                 <Paper style={documentStyle} zDepth={1}>
                     <Toolbar>
                         <ToolbarGroup firstChild={true}>
@@ -145,7 +149,7 @@ export default class EditorComponent extends Component {
                             </Popover>
                         </ToolbarGroup>
                     </Toolbar>
-                    <div id="accessibleDocument" contentEditable={true} dangerouslySetInnerHTML={this.state.content}/>
+                    <div id="accessibleDocument" className="document-edit" contentEditable={true} dangerouslySetInnerHTML={this.state.content}/>
                 </Paper>
             </div>
         );
