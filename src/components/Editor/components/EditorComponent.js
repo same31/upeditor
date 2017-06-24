@@ -7,6 +7,10 @@ Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle,
 IconMenu, IconButton, MenuItem, FlatButton, RaisedButton, FontIcon } from 'material-ui';
 import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
 
+import {parseHTML, getHTMLSemanticErrorList} from '../htmlUtils';
+import htmlKOContent from '../input/Example_01_deux_colonnes.html';
+
+
 const documentStyle = {
     margin: 20,
     textAlign: 'center',
@@ -24,7 +28,7 @@ export default class EditorComponent extends Component {
             },
             {
                 title: "HTML KO",
-                content: {__html: "<h2>HELLO WORLD</h2><p>A stepping stone to the ultimate success</p>" }
+                content: {__html: htmlKOContent }
             },
             {
                 title: "Empty Document",
@@ -44,6 +48,14 @@ export default class EditorComponent extends Component {
     editDocument (listItem) {
         this.setState({
             ...listItem
+        }, () => {
+            if (listItem.content.__html) {
+                const parsedHTML            = parseHTML(listItem.content.__html),
+                      htmlSemanticErrorList = getHTMLSemanticErrorList(parsedHTML);
+
+                console.log(htmlSemanticErrorList.filter(htmlSemanticError => htmlSemanticError.error)
+                    .map(htmlSemanticError => htmlSemanticError.error));
+            }
         });
     }
 
