@@ -2,6 +2,7 @@
  * Created by mael on 24/06/17.
  */
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import {
     Drawer, AppBar, List, ListItem, Paper,
     Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle, Menu,
@@ -74,6 +75,12 @@ export default class EditorComponent extends Component {
 
     checkHTMLSemantic = (htmlCollection) => {
         const htmlSemanticErrorList = getHTMLSemanticErrorList(htmlCollection);
+
+        htmlSemanticErrorList.forEach(htmlSemanticError => {
+            if (htmlSemanticError.error) {
+                htmlSemanticError.htmlElement.setAttribute('data-error-message', htmlSemanticError.error);
+            }
+        });
 
         console.log('elements in error:', htmlSemanticErrorList.filter(htmlSemanticError => htmlSemanticError.error)
             .map(htmlSemanticError => htmlSemanticError.htmlElement));

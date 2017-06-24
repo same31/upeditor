@@ -4,4 +4,14 @@
 .document-edit {
     text-align: justify;
     padding-left: 10px;
+    outline: none;
+}
+
+.document-edit [data-error-message] {
+    padding: 5px;
+    border: 1px solid #dadada;
+    border-radius: 5px;
+    border-color: #ed6b85;
+    box-shadow: 0 0 10px #ed6b85;
+    outline: none;
 }
