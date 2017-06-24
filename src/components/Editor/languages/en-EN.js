@@ -1,6 +1,17 @@
 export default {
  'locales':  'en-EN',
  'messages': {
+
+  'french' : 'French',
+  'english' : 'English',
+  'spanish' : 'Spanish',
+
+  'noDocument' : 'No document',
+  'noDocumentLong' : 'No document, select a document to edit in the main menu.',
+
+  'emptyDocument': 'Empty Document',
+
+
   'btnOk': 'Ok',
   'btnSave': 'Save',
   'title': 'Title',

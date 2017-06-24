@@ -1,6 +1,16 @@
 export default {
  'locales':  'es-ES',
  'messages': {
+  'french' : 'Francés',
+  'english' : 'Inglés',
+  'spanish' : 'Español',
+
+  'noDocument' : 'No hay documento',
+  'noDocumentLong' : 'No hay documento, selecciona un documento para editarlo en el menu principal.',
+
+  'emptyDocument': 'Nuevo document vacio',
+
+
   'btnOk': 'Ok',
   'btnSave': 'Guardar',
   'title': 'Título',
