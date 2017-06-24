@@ -6,6 +6,10 @@ import { Drawer, AppBar, List, ListItem, Paper,
 Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle,
 IconMenu, IconButton, MenuItem, FlatButton, RaisedButton, FontIcon } from 'material-ui';
 import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
+import Intel from '../Internalisation';
+
+//example of us Intel -> Internalisation.getMsg("btnSave");
+
 
 const documentStyle = {
     margin: 20,
