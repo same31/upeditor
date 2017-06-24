@@ -24,7 +24,7 @@ import Internalisation from '../Internalisation.js';
 const documentStyle = {
     margin:    20,
     textAlign: 'center',
-    display:   'block',
+    display:   'block'
 };
 
 export default class EditorComponent extends Component {
@@ -42,7 +42,7 @@ export default class EditorComponent extends Component {
             languageMenu: false,
             errorSelected: false,
             errorMessage: "",
-            language : 'fr-FR',
+            language : 'en-EN',
             intel : null
         };
     }
@@ -88,7 +88,7 @@ export default class EditorComponent extends Component {
             },
             {
                 title:   "HTML KO",
-                content: { __html: "<h2>HELLO WORLD</h2><p>A stepping stone to the ultimate success</p>" }
+                content: { __html: "<h2>HELLO WORLD</h2><p>A stepping stone to the ultimate success</p><div>Say hello to my little DIV</div>" }
             },
             {
                 title:   intel.getMsg("emptyDocument"),
@@ -107,13 +107,13 @@ export default class EditorComponent extends Component {
 
         this.setState({
             openFileMenu: true,
-            anchorEl:     event.currentTarget,
+            anchorEl:     event.currentTarget
         });
     };
 
     handleRequestFileMenuClose = () => {
         this.setState({
-            openFileMenu: false,
+            openFileMenu: false
         });
     };
 
@@ -123,13 +123,13 @@ export default class EditorComponent extends Component {
 
         this.setState({
             languageMenu: true,
-            anchorEl:     event.currentTarget,
+            anchorEl:     event.currentTarget
         });
     };
 
     handleLanguageMenuClose = () => {
         this.setState({
-            languageMenu: false,
+            languageMenu: false
         });
     };
 
@@ -162,7 +162,8 @@ export default class EditorComponent extends Component {
         const htmlSemanticErrorList = getHTMLSemanticErrorList(document.getElementById('accessibleDocument').childNodes);
 
         htmlSemanticErrorList.forEach(htmlSemanticError => {
-            if (htmlSemanticError.error) {
+            if (htmlSemanticError.errorLevel) {
+                htmlSemanticError.htmlElement.setAttribute('data-error-level', htmlSemanticError.errorLevel);
                 htmlSemanticError.htmlElement.setAttribute('data-error-message', htmlSemanticError.error);
             }
         });
@@ -194,6 +195,36 @@ export default class EditorComponent extends Component {
         }
     }
 
+    clickInsertPhoto () {
+        document.getElementById("chooseFileModal").click();
+    }
+
+    onFileSelected (event) {
+        var tgt = event.target || window.event.srcElement,
+            files = tgt.files;
+
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+
+                //TODO it will be in an other div to put this img, but the BASE64 is in fr.result
+                document.getElementById('imgShowed').src = fr.result;
+            };
+            fr.readAsDataURL(files[0]);
+        }
+
+        // Not supported
+        else {
+            this.setState({
+                errorSelected: true,
+                errorMessage: this.state.intel.getMsg("functionalityNotWorking")
+            });
+            // fallback -- perhaps submit the input to an iframe and temporarily store
+            // them on the server until the user's session ends.
+        }
+    }
+
     render () {
         const getMsg = this.state.intel.getMsg;
 
@@ -204,7 +235,7 @@ export default class EditorComponent extends Component {
                     open={this.state.open}
                     onRequestChange={(open) => this.setState({ open })}>
                     <List>
-                        <Subheader>Documents available for edition</Subheader>
+                        <Subheader>{getMsg("titreSelectDocument")}</Subheader>
                         {this.htmlInput.map(listItem => <ListItem key={"htmlInput."+listItem.title} primaryText={listItem.title} leftIcon={<InsertDriveFile />} onClick={this.editDocument.bind(this, listItem)} />)}
                     </List>
                 </Drawer>
@@ -239,13 +270,17 @@ export default class EditorComponent extends Component {
                             <IconButton><FormatListNumbered/></IconButton>
                             <IconButton><FormatListBulleted/></IconButton>
                             <ToolbarSeparator/>
-                            <IconButton><InsertPhoto /></IconButton>
+                            <IconButton onClick={this.clickInsertPhoto} ><InsertPhoto />
+                                <input id="chooseFileModal" style="visibility: hidden" type="file" accept="image/*" onChange={this.onFileSelected} />
+                                { /*TO DELETE THIS LINE IMG, ONLY FOR TEST*/}
+                                <img id="imgShowed"></img>
+                                </IconButton>
                         </ToolbarGroup>
                         <ToolbarGroup>
                             <ToolbarTitle text={this.state.title}/>
                             <ToolbarSeparator />
                             <FlatButton
-                                label="File"
+                                label={getMsg("file")}
                                 className={"toolbar-flat-button"}
                                 onTouchTap={this.handleOpenFileMenu}
                                 primary={true}
