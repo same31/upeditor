@@ -9,6 +9,11 @@ import InsertDriveFile from 'material-ui/svg-icons/editor/insert-drive-file';
 import Title from 'material-ui/svg-icons/editor/title';
 import InsertPhoto from 'material-ui/svg-icons/editor/insert-photo';
 
+import Intel from '../Internalisation';
+
+//example of us Intel -> Internalisation.getMsg("btnSave");
+
+
 import {parseHTML, getHTMLSemanticErrorList} from '../htmlUtils';
 import htmlKOContent from '../input/Example_01_deux_colonnes.html';
 
