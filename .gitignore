@@ -1,5 +1,6 @@
 ## Project
 /build/
+package-lock.json
 
 ## Node
 node_modules/
