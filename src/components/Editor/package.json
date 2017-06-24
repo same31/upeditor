@@ -1,13 +1,7 @@
 {
-  "name": "YourComponent",
+  "name": "EditorApp",
   "version": "0.0.1",
-  "main": "editor-app.js",
+  "main": "EditorApp.js",
   "private": false,
-  "dependencies": {
-    "material-ui": "^0.18.3",
-    "react": "^15.5.4",
-    "react-addons-css-transition-group": "^15.5.2",
-    "react-dom": "^15.5.4",
-    "react-tap-event-plugin": "^2.0.1"
-  }
+  "dependencies": {}
 }
