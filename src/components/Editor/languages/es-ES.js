@@ -8,7 +8,9 @@ export default {
   'noDocument' : 'No hay documento',
   'noDocumentLong' : 'No hay documento, selecciona un documento para editarlo en el menu principal.',
 
-  'emptyDocument': 'Nuevo document vacio',
+  'titreSelectDocument' : 'Documentos para la edición',
+
+  'emptyDocument': 'Documento vacio',
 
 
   'btnOk': 'Ok',
@@ -19,7 +21,9 @@ export default {
   'title3': 'Título 3',
   'title4': 'Título 4',
   'title5': 'Título 5',
-  'title6': 'Título 6'
+  'title6': 'Título 6',
+
+  'file': 'Archivo'
 
  }
 }
