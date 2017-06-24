@@ -1,0 +1,7 @@
+{
+  "name": "EditorApp",
+  "version": "0.0.1",
+  "main": "EditorApp.js",
+  "private": false,
+  "dependencies": {}
+}
