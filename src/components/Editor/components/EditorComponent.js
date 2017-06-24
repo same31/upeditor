@@ -41,7 +41,8 @@ export default class EditorComponent extends Component {
             title: "No document"
         };
     }
-    handleToggle() {
+
+    toggleDrawer() {
         this.setState({open: !this.state.open});
     }
 
@@ -56,6 +57,7 @@ export default class EditorComponent extends Component {
                 console.log(htmlSemanticErrorList.filter(htmlSemanticError => htmlSemanticError.error)
                     .map(htmlSemanticError => htmlSemanticError.error));
             }
+            this.toggleDrawer();
         });
     }
 
@@ -75,7 +77,7 @@ export default class EditorComponent extends Component {
                 </Drawer>
 
                 <AppBar   title="UpEditor"
-                          onLeftIconButtonTouchTap={this.handleToggle.bind(this)} />
+                          onLeftIconButtonTouchTap={this.toggleDrawer.bind(this)} />
                 <Paper style={documentStyle} zDepth={1}>
                     <Toolbar>
                         <ToolbarGroup firstChild={true}>
