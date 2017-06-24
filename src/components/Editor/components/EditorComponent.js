@@ -53,7 +53,9 @@ export default class EditorComponent extends Component {
         const intel = Internalisation(language);
         this.setState({
             intel: intel,
-            content: { __html: intel.getMsg("noDocumentLong") },
+            content: { __html: "<div class='info-div'" +
+            " contenteditable='false'>" +
+                intel.getMsg("noDocumentLong") + "</div>" },
             title: intel.getMsg("noDocument")
         }, () => {this.htmlInput = [
             {
@@ -68,7 +70,7 @@ export default class EditorComponent extends Component {
                 title:   intel.getMsg("emptyDocument"),
                 content: { __html: "" }
             }
-        ];
+        ];});
     }
 
     toggleDrawer () {
