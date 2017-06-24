@@ -40,7 +40,7 @@ export default function (language) {
                     if (count > 1) {
                         pluralKey = 'many';
                     }
-                    else if (parseInt(count) === 1 || (!count && typeof result[countKey].zero === 'undefined')) {
+                    else if (parseInt(count, 10) === 1 || (!count && typeof result[countKey].zero === 'undefined')) {
                         pluralKey = 'one';
                     }
                     else {
