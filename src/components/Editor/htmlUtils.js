@@ -49,8 +49,6 @@ export function getHTMLSemanticErrorList (htmlCollection = []) {
             else {
                 const subtitleLevel = _getElementSubtitleLevel(htmlElement);
                 if (subtitleLevel) {
-                    console.log(subtitleLevel);
-                    console.log('max', maxAllowedSubtitleLevel);
                     if (subtitleLevel <= maxAllowedSubtitleLevel) {
                         maxAllowedSubtitleLevel = subtitleLevel + 1;
                     }

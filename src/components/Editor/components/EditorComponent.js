@@ -162,9 +162,9 @@ export default class EditorComponent extends Component {
         getHTMLSemanticErrorList(document.getElementById('document-edit').childNodes)
             .forEach(htmlSemanticError => {
                 if (htmlSemanticError.error.level) {
-                    htmlSemanticError.htmlElement.setAttribute('data-error-level', htmlSemanticError.errorLevel);
-                    /*htmlSemanticError.htmlElement.setAttribute('data-error-message',
-                        this.state.intl.getMsg(htmlSemanticError.error.message, htmlSemanticError.error.data));*/
+                    htmlSemanticError.htmlElement.setAttribute('data-error-level', htmlSemanticError.error.level);
+                    htmlSemanticError.htmlElement.setAttribute('data-error-message',
+                        this.state.intl.getMsg(htmlSemanticError.error.message, htmlSemanticError.error.data));
                 }
             });
     };

@@ -20,7 +20,8 @@
         "file":                "File",
         "errors":              {
             "functionalityNotWorking": "This functionality does not work with your explorer, please use a more recent one.",
-            "unsupportedTagName":      "Unsupported tag name ':tagName:'"
+            "unsupportedTagName":      "Unsupported tag name ':tagName:'",
+            "titleLevelNotAllowed": "Level title :subtitleLevel: is not allowed here, no previous level title :maxAllowedSubtitleLevel:."
         }
     }
 }
