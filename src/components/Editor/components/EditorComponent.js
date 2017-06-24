@@ -139,7 +139,7 @@ export default class EditorComponent extends Component {
      * @param anchor
      * @param event
      */
-    setAnchor = (anchor, event) => {
+    setAnchor = anchor => {
         let currentSelection = document.getSelection().anchorNode;
         if (currentSelection.nodeName === "#text") {
             currentSelection = currentSelection.parentNode;
@@ -182,7 +182,7 @@ export default class EditorComponent extends Component {
                 this.checkHTMLSemantic();
             }
             else {
-                const emptyParagraph = document.createElement('P');
+                const emptyParagraph     = document.createElement('P');
                 emptyParagraph.innerHTML = 'Start typing&hellip;';
                 document.getElementById('accessibleDocument').appendChild(emptyParagraph);
             }
@@ -202,16 +202,18 @@ export default class EditorComponent extends Component {
     }
 
     onFileSelected (event) {
-        var tgt   = event.target || window.event.srcElement,
-            files = tgt.files;
+        const tgt   = event.target || window.event.srcElement,
+              files = tgt.files;
 
         // FileReader support
         if (FileReader && files && files.length) {
-            var fr    = new FileReader();
+            const fr  = new FileReader();
             fr.onload = function () {
-
-                //TODO it will be in an other div to put this img, but the BASE64 is in fr.result
-                document.getElementById('imgShowed').src = fr.result;
+                const image = document.createElement('IMG');
+                // Base 64
+                image.src   = fr.result;
+                image.alt   = files[0].name;
+                document.getElementById('accessibleDocument').appendChild(image);
             };
             fr.readAsDataURL(files[0]);
         }
@@ -277,8 +279,6 @@ export default class EditorComponent extends Component {
                             <ToolbarSeparator/>
                             <IconButton onClick={this.clickInsertPhoto}><InsertPhoto />
                                 <input id="chooseFileModal" type="file" accept="image/*" onChange={this.onFileSelected}/>
-                                { /*TODO: DELETE THIS LINE IMG, ONLY FOR TEST*/}
-                                <img id="imgShowed" alt=""></img>
                             </IconButton>
                         </ToolbarGroup>
                         <ToolbarGroup>
