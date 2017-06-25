@@ -54,3 +54,8 @@
 #chooseFileModal {
  visibility: hidden
 }
+
+:empty {
+    display: block;
+    height: 1em;
+}

@@ -183,12 +183,32 @@ export default class EditorComponent extends Component {
             currentSelection.appendChild(newNode);
             newNode.innerHTML = anchor === "h1" || "h2" || "h3" ? "New Title" : newNode.innerHTML;
         }
-        if (anchor === "ul" || "ol") {
-            newNode.innerHTML = "<li>Item 1</li>";
+        if (anchor === "ul" || anchor === "ol") {
+            let li = document.createElement("li");
+            li.setAttribute("tabindex","-1");
+            li.innerHTML = "...";
+            newNode.appendChild(li);
+            requestAnimationFrame(function() {
+                // this.selectElementContents(li);
+            });
+        } else {
+            newNode.setAttribute("tabindex","-1");
+            requestAnimationFrame(function() {
+                // this.selectElementContents(newNode);
+            });
         }
         document.execCommand('delete', false, null);
         this.checkHTMLSemantic();
     };
+
+    selectElementContents = (el) => {
+        let range = document.createRange();
+        range.selectNodeContents(el);
+        let sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    };
+
 
     checkHTMLSemantic = () => {
         getHTMLSemanticErrorList(document.getElementById('document-edit').childNodes)
@@ -260,6 +280,17 @@ export default class EditorComponent extends Component {
         }
     };
 
+    createParagraph = e => {
+        e = e || window.event;
+        if (e.keyCode === 13) {
+            console.info(window.getSelection().anchorNode.previousElementSibling.nodeName);
+            if(window.getSelection().anchorNode.previousElementSibling.nodeName !== "LI"){
+                document.execCommand('formatBlock', false, 'p');
+            }
+        }
+
+    };
+
     render () {
         const getMsg = this.state.intl.getMsg;
 
@@ -304,6 +335,9 @@ export default class EditorComponent extends Component {
                                 <MenuItem primaryText={<h1>h1.Title 1</h1>} onTouchTap={this.setAnchor.bind(this, "h1")}/>
                                 <MenuItem primaryText={<h2>h2.Title 2</h2>} onTouchTap={this.setAnchor.bind(this, "h2")}/>
                                 <MenuItem primaryText={<h3>h3.Title 3</h3>} onTouchTap={this.setAnchor.bind(this, "h3")}/>
+                                <MenuItem primaryText={<h3>h4.Title 4</h3>} onTouchTap={this.setAnchor.bind(this, "h4")}/>
+                                <MenuItem primaryText={<h3>h5.Title 5</h3>} onTouchTap={this.setAnchor.bind(this, "h5")}/>
+                                <MenuItem primaryText={<h3>h6.Title 6</h3>} onTouchTap={this.setAnchor.bind(this, "h6")}/>
                             </IconMenu>
                             <IconButton onTouchTap={this.setAnchor.bind(this, "ol")}><FormatListNumbered/></IconButton>
                             <IconButton onTouchTap={this.setAnchor.bind(this, "ul")}><FormatListBulleted/></IconButton>
@@ -338,7 +372,7 @@ export default class EditorComponent extends Component {
                     </Toolbar>
                     <div id="document-edit" className="document-edit" onPaste={this.handlePaste}
                          contentEditable={true} dangerouslySetInnerHTML={this.state.content}
-                         onClick={this.clickHandler}/>
+                         onClick={this.clickHandler} onKeyPress={this.createParagraph} onKeyUp={this.createParagraph}/>
                     <Snackbar message={"Error : " + this.state.errorMessage} open={this.state.errorSelected}/>
                     <ChooseOCRModal getMsg={getMsg} {...this.state.chooseOCRModal}/>
                 </Paper>
