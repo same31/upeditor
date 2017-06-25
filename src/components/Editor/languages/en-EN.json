@@ -11,12 +11,6 @@
         "btnOk":               "Ok",
         "btnSave":             "Save",
         "title":               "Title",
-        "title1":              "Title 1",
-        "title2":              "Title 2",
-        "title3":              "Title 3",
-        "title4":              "Title 4",
-        "title5":              "Title 5",
-        "title6":              "Title 6",
         "file":                "File",
         "ocrModal": {
             "title": "Add image",
@@ -28,6 +22,8 @@
             "functionalityNotWorking": "This functionality does not work with your explorer, please use a more recent one.",
             "unsupportedTagName":      "Unsupported tag name ':tagName:'",
             "titleLevelNotAllowed": "Level title :subtitleLevel: is not allowed here, no previous level title :maxAllowedSubtitleLevel:."
-        }
+        },
+        "startTyping":         "Click here to start typing&hellip;"
+
     }
 }

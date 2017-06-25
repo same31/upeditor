@@ -11,12 +11,6 @@
         "btnOk":               "Ok",
         "btnSave":             "Guardar",
         "title":               "Título",
-        "title1":              "Título 1",
-        "title2":              "Título 2",
-        "title3":              "Título 3",
-        "title4":              "Título 4",
-        "title5":              "Título 5",
-        "title6":              "Título 6",
         "file":                "Archivo",
         "ocrModal": {
             "title": "Añadir una imagen",
@@ -25,7 +19,10 @@
             "processOCR": "Detectar y añadir el texto de la imagen"
         },
         "errors":              {
-            "functionalityNotWorking": "Esta funcionalidad no funciona en su navegador, por favor utilice uno más moderno."
-        }
+            "functionalityNotWorking": "Esta funcionalidad no funciona en su navegador, por favor utilice uno más moderno.",
+            "unsupportedTagName":      "Baliza no valida ':tagName:'",
+            "titleLevelNotAllowed": "Título :subtitleLevel: no esta permitido aquí, no hay un título anterior :maxAllowedSubtitleLevel:."
+        },
+        "startTyping":         "Clique aquí para empezar a escribir&hellip;"
     }
 }

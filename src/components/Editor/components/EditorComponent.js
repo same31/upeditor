@@ -332,12 +332,12 @@ export default class EditorComponent extends Component {
                                 iconButtonElement={<IconButton><Title /></IconButton>}
                                 anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
                                 targetOrigin={{ horizontal: 'left', vertical: 'bottom' }}>
-                                <MenuItem primaryText={<h1>h1.Title 1</h1>} onTouchTap={this.setAnchor.bind(this, "h1")}/>
-                                <MenuItem primaryText={<h2>h2.Title 2</h2>} onTouchTap={this.setAnchor.bind(this, "h2")}/>
-                                <MenuItem primaryText={<h3>h3.Title 3</h3>} onTouchTap={this.setAnchor.bind(this, "h3")}/>
-                                <MenuItem primaryText={<h3>h4.Title 4</h3>} onTouchTap={this.setAnchor.bind(this, "h4")}/>
-                                <MenuItem primaryText={<h3>h5.Title 5</h3>} onTouchTap={this.setAnchor.bind(this, "h5")}/>
-                                <MenuItem primaryText={<h3>h6.Title 6</h3>} onTouchTap={this.setAnchor.bind(this, "h6")}/>
+                                <MenuItem primaryText={<h1>h1.{getMsg('title')} 1</h1>} onTouchTap={this.setAnchor.bind(this, "h1")}/>
+                                <MenuItem primaryText={<h2>h2.{getMsg('title')} 2</h2>} onTouchTap={this.setAnchor.bind(this, "h2")}/>
+                                <MenuItem primaryText={<h3>h3.{getMsg('title')} 3</h3>} onTouchTap={this.setAnchor.bind(this, "h3")}/>
+                                <MenuItem primaryText={<h3>h4.{getMsg('title')} 4</h3>} onTouchTap={this.setAnchor.bind(this, "h4")}/>
+                                <MenuItem primaryText={<h3>h5.{getMsg('title')} 5</h3>} onTouchTap={this.setAnchor.bind(this, "h5")}/>
+                                <MenuItem primaryText={<h3>h6.{getMsg('title')} 6</h3>} onTouchTap={this.setAnchor.bind(this, "h6")}/>
                             </IconMenu>
                             <IconButton onTouchTap={this.setAnchor.bind(this, "ol")}><FormatListNumbered/></IconButton>
                             <IconButton onTouchTap={this.setAnchor.bind(this, "ul")}><FormatListBulleted/></IconButton>
