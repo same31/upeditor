@@ -39,6 +39,7 @@ export default class EditorComponent extends Component {
             languageMenu:  false,
             errorSelected: false,
             errorMessage:  "",
+            documentSelected: false,
             language:      'en-EN',
             intl:          null
         };
@@ -146,15 +147,10 @@ export default class EditorComponent extends Component {
             currentSelection = currentSelection.parentNode;
         }
         let newNode = document.createElement(anchor);
-        if (currentSelection.nodeName !== "DIV") {
-            let parentNode = currentSelection.parentNode;
-            newNode.setAttribute("contentEditable", "true");
-            newNode.innerHTML = currentSelection.innerHTML;
-            parentNode.replaceChild(newNode, currentSelection);
-        } else {
-            currentSelection.appendChild(newNode);
-            newNode.innerHTML = anchor === "h1" || "h2" || "h3" ? "New Title" : newNode.innerHTML;
-        }
+        let parentNode = currentSelection.parentNode;
+        newNode.innerHTML = currentSelection.innerHTML;
+        parentNode.replaceChild(newNode, currentSelection);
+
         if (anchor === "ul" || anchor === "ol") {
             let li = document.createElement("li");
             li.setAttribute("tabindex","-1");
@@ -173,14 +169,6 @@ export default class EditorComponent extends Component {
         this.checkHTMLSemantic();
     };
 
-    selectElementContents = (el) => {
-        let range = document.createRange();
-        range.selectNodeContents(el);
-        let sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-    };
-
 
     checkHTMLSemantic = () => {
         getHTMLSemanticErrorList(document.getElementById('document-edit').childNodes)
@@ -194,7 +182,7 @@ export default class EditorComponent extends Component {
     };
 
     editDocument (listItem) {
-        this.setState({ ...listItem }, () => {
+        this.setState({ ...listItem, documentSelected: true }, () => {
             if (listItem.content.__html) {
                 this.checkHTMLSemantic();
             }
@@ -292,7 +280,7 @@ export default class EditorComponent extends Component {
                     </Menu>
                 </Popover>
                 <Paper style={documentStyle} zDepth={1}>
-                    <Toolbar>
+                    <Toolbar className={this.state.documentSelected ? "document-selected" : "no-document"}>
                         <ToolbarGroup firstChild={true}>
                             <IconMenu
                                 iconButtonElement={<IconButton><Title /></IconButton>}
