@@ -51,11 +51,11 @@
     max-height: 100%;
 }
 
-#chooseFileModal {
- visibility: hidden
-}
-
-:empty {
+.document-edit :not(img):empty {
     display: block;
     height: 1em;
+}
+
+#chooseFileModal {
+ visibility: hidden
 }
