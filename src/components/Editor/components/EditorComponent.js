@@ -70,7 +70,7 @@ export default class EditorComponent extends Component {
         document.addEventListener('onPaste', this.checkHTMLSem);
     }
 
-    handlePaste = ( ) => {
+    handlePaste = () => {
         this.checkHTMLSemantic(document.getElementById('accessibleDocument').childNodes);
     };
 
@@ -104,7 +104,7 @@ export default class EditorComponent extends Component {
         this.setState({ open: !this.state.open });
     }
 
-    handleOpenFileMenu = (event) => {
+    handleOpenFileMenu = event => {
         // This prevents ghost click.
         event.preventDefault();
 
@@ -120,7 +120,7 @@ export default class EditorComponent extends Component {
         });
     };
 
-    openLanguageMenu = (event) => {
+    openLanguageMenu = event => {
         // This prevents ghost click.
         event.preventDefault();
 
@@ -170,9 +170,7 @@ export default class EditorComponent extends Component {
     };
 
     editDocument (listItem) {
-        this.setState({
-            ...listItem
-        }, () => {
+        this.setState({ ...listItem }, () => {
             if (listItem.content.__html) {
                 this.checkHTMLSemantic();
             }
