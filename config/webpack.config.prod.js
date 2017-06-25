@@ -67,6 +67,11 @@ module.exports = {
     // We inferred the "public path" (such as / or /my-project) from homepage.
     publicPath: publicPath
   },
+  externals: {
+    // require("tesseract.js") is external and available
+    //  on the global var Tesseract
+    "tesseract.js": "Tesseract"
+  },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
     // We read `NODE_PATH` environment variable in `paths.js` and pass paths here.
