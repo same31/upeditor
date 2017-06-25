@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import EditorComponent from './components/EditorComponent';
@@ -9,23 +9,8 @@ import EditorComponent from './components/EditorComponent';
 injectTapEventPlugin();
 import './style.css';
 
-class EditorApp extends Component {
-    componentWillMount () {
-        /*const parsedHTML            = parseHTML(example01DeuxColonnesHTML),
-              htmlSemanticErrorList = getHTMLSemanticErrorList(parsedHTML);
-
-        console.log(htmlSemanticErrorList.filter(htmlSemanticError => htmlSemanticError.error)
-            .map(htmlSemanticError => htmlSemanticError.error));*/
-    }
-
-    render () {
-        return (
-            <MuiThemeProvider>
-                <EditorComponent className="Editor"/>
-            </MuiThemeProvider>
-        );
-    }
-}
-
-
-export default EditorApp;
+export default () => (
+    <MuiThemeProvider>
+        <EditorComponent className="Editor"/>
+    </MuiThemeProvider>
+);

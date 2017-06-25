@@ -213,6 +213,10 @@ export default class EditorComponent extends Component {
                     htmlSemanticError.htmlElement.setAttribute('data-error-message',
                         this.state.intl.getMsg(htmlSemanticError.error.message, htmlSemanticError.error.data));
                 }
+                else {
+                    htmlSemanticError.htmlElement.removeAttribute('data-error-level');
+                    htmlSemanticError.htmlElement.removeAttribute('data-error-message');
+                }
             });
     };
 
@@ -279,7 +283,6 @@ export default class EditorComponent extends Component {
     createParagraph = e => {
         e = e || window.event;
         if (e.keyCode === 13) {
-            console.info(window.getSelection().anchorNode.previousElementSibling.nodeName);
             if (window.getSelection().anchorNode.previousElementSibling.nodeName !== "LI") {
                 document.execCommand('formatBlock', false, 'p');
             }
