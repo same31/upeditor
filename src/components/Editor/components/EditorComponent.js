@@ -158,7 +158,7 @@ export default class EditorComponent extends Component {
         if (anchor === "ul" || anchor === "ol") {
             let li = document.createElement("li");
             li.setAttribute("tabindex","-1");
-            li.innerHTML = "&#200B";
+            li.innerHTML = "...";
             newNode.appendChild(li);
             requestAnimationFrame(function() {
                 // this.selectElementContents(li);
