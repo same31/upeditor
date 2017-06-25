@@ -1,6 +1,10 @@
 /** Roboto font for material-ui **/
 @import url('https://fonts.googleapis.com/css?familnpm runy=Roboto:300,400,500');
 
+.text-center {
+    text-align: center;
+}
+
 .document-edit {
     text-align: justify;
     padding: 10px;

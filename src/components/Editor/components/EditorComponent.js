@@ -35,22 +35,23 @@ export default class EditorComponent extends Component {
         super(props);
         this.htmlInput = [];
         this.state     = {
-            open:                 false,
-            content:              {
+            open:             false,
+            content:          {
                 __html: "<div class='info-div' contentEditable='false'></div>"
             },
-            title:         '',
-            openFileMenu:  false,
-            languageMenu:  false,
-            errorSelected: false,
-            errorMessage:  "",
-            chooseOCRModal: {
-                open: false,
-                image: null
+            title:            '',
+            openFileMenu:     false,
+            languageMenu:     false,
+            errorSelected:    false,
+            errorMessage:     "",
+            chooseOCRModal:   {
+                open:      false,
+                image:     null,
+                completed: 0
             },
             documentSelected: false,
-            language:      'en-EN',
-            intl:          null
+            language:         'en-EN',
+            intl:             null
         };
     }
 
@@ -78,22 +79,29 @@ export default class EditorComponent extends Component {
         this.setLanguage(this.state.language);
 
         window.EventBus.on('chooseOCR', (recognize, image) => {
-            this.setState({chooseOCRModal: {open: false}}, () => {
-                const documentEditElement = document.getElementById('document-edit');
-                if (recognize) {
-                    // OCR
-                    Tesseract.recognize(image)
-                        .progress(function  (p) { console.log('progress', p)    })
-                        .then(function (result) { console.log('result', result);
-                            const ocrParagraph = document.createElement('P');
-                            ocrParagraph.innerHTML = result.text;
-                            documentEditElement.appendChild(ocrParagraph);
-                        });
-                }
-                else {
-                    documentEditElement.appendChild(image);
-                }
-            });
+            const documentEditElement = document.getElementById('document-edit');
+            if (recognize) {
+                // OCR
+                Tesseract.recognize(image)
+                    .progress(p => {
+                        if (p.status === 'recognizing text') {
+                            const completed = p.progress * 100;
+                            if (!isNaN(completed) && completed) {
+                                this.setState({ chooseOCRModal: { ...this.state.chooseOCRModal, completed } });
+                            }
+                        }
+                    })
+                    .then(result => {
+                        const ocrParagraph     = document.createElement('P');
+                        ocrParagraph.innerHTML = result.text;
+                        documentEditElement.appendChild(ocrParagraph);
+                        this.setState({ chooseOCRModal: { open: false } });
+                    });
+            }
+            else {
+                documentEditElement.appendChild(image);
+                this.setState({ chooseOCRModal: { open: false } });
+            }
         });
 
         document.addEventListener('onPaste', this.checkHTMLSem);
@@ -174,29 +182,28 @@ export default class EditorComponent extends Component {
         if (currentSelection.nodeName === "#text") {
             currentSelection = currentSelection.parentNode;
         }
-        let newNode = document.createElement(anchor);
-        let parentNode = currentSelection.parentNode;
+        let newNode       = document.createElement(anchor);
+        let parentNode    = currentSelection.parentNode;
         newNode.innerHTML = currentSelection.innerHTML;
         parentNode.replaceChild(newNode, currentSelection);
 
         if (anchor === "ul" || anchor === "ol") {
             let li = document.createElement("li");
-            li.setAttribute("tabindex","-1");
+            li.setAttribute("tabindex", "-1");
             li.innerHTML = "...";
             newNode.appendChild(li);
-            requestAnimationFrame(function() {
+            requestAnimationFrame(function () {
                 // this.selectElementContents(li);
             });
         } else {
-            newNode.setAttribute("tabindex","-1");
-            requestAnimationFrame(function() {
+            newNode.setAttribute("tabindex", "-1");
+            requestAnimationFrame(function () {
                 // this.selectElementContents(newNode);
             });
         }
         document.execCommand('delete', false, null);
         this.checkHTMLSemantic();
     };
-
 
     checkHTMLSemantic = () => {
         getHTMLSemanticErrorList(document.getElementById('document-edit').childNodes)
@@ -249,6 +256,7 @@ export default class EditorComponent extends Component {
 
                 this.setState({
                     chooseOCRModal: {
+                        ...this.state.chooseOCRModal,
                         open: true,
                         image
                     }
@@ -272,7 +280,7 @@ export default class EditorComponent extends Component {
         e = e || window.event;
         if (e.keyCode === 13) {
             console.info(window.getSelection().anchorNode.previousElementSibling.nodeName);
-            if(window.getSelection().anchorNode.previousElementSibling.nodeName !== "LI"){
+            if (window.getSelection().anchorNode.previousElementSibling.nodeName !== "LI") {
                 document.execCommand('formatBlock', false, 'p');
             }
         }

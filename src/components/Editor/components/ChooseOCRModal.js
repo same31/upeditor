@@ -1,6 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 /**
  * A modal dialog can only be closed by selecting one of the actions.
@@ -20,13 +21,8 @@ export default class ChooseOCRModal extends React.Component {
         }
     }
 
-    handleClose = () => {
-        this.setState({ open: false });
-    };
-
     processOCR = recognize => {
         window.EventBus.emit('chooseOCR', recognize, this.props.image);
-        this.handleClose();
     };
 
     render () {
@@ -53,6 +49,16 @@ export default class ChooseOCRModal extends React.Component {
                     open={this.state.open}
                 >
                     {getMsg('ocrModal.body')}
+                    {this.props.completed
+                        ? <div className="text-center">
+                            <CircularProgress
+                                mode="determinate"
+                                value={this.props.completed}
+                                size={60}
+                                thickness={7}
+                            />
+                        </div>
+                        : ''}
                 </Dialog>
             </div>
         );
