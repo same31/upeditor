@@ -139,7 +139,7 @@ export default class EditorComponent extends Component {
      * @param anchor
      * @param event
      */
-    setAnchor = (anchor, event) => {
+    setAnchor = (anchor) => {
         let currentSelection = document.getSelection().anchorNode;
         if (currentSelection.nodeName === "#text") {
             currentSelection = currentSelection.parentNode;
@@ -152,8 +152,12 @@ export default class EditorComponent extends Component {
             parentNode.replaceChild(newNode, currentSelection);
         } else {
             currentSelection.appendChild(newNode);
-            newNode.innerHTML = "New Title";
+            newNode.innerHTML = anchor === "h1" || "h2" || "h3" ? "New Title" : newNode.innerHTML;
         }
+        if (anchor === "ul" || "ol") {
+            newNode.innerHTML = "<li>Item 1</li>";
+        }
+        document.execCommand('delete', false, null);
         this.checkHTMLSemantic();
     };
 
@@ -270,8 +274,8 @@ export default class EditorComponent extends Component {
                                 <MenuItem primaryText={<h2>h2.Title 2</h2>} onTouchTap={this.setAnchor.bind(this, "h2")}/>
                                 <MenuItem primaryText={<h3>h3.Title 3</h3>} onTouchTap={this.setAnchor.bind(this, "h3")}/>
                             </IconMenu>
-                            <IconButton><FormatListNumbered/></IconButton>
-                            <IconButton><FormatListBulleted/></IconButton>
+                            <IconButton onTouchTap={this.setAnchor.bind(this, "ol")}><FormatListNumbered/></IconButton>
+                            <IconButton onTouchTap={this.setAnchor.bind(this, "ul")}><FormatListBulleted/></IconButton>
                             <ToolbarSeparator/>
                             <IconButton onClick={this.clickInsertPhoto}><InsertPhoto />
                                 <input id="chooseFileModal" type="file" accept="image/*" onChange={this.onFileSelected}/>
