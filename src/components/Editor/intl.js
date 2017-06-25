@@ -1,26 +1,25 @@
-import localeFR from './languages/fr-FR.js'
-import localeEN from './languages/en-EN.js'
-import localeES from './languages/es-ES.js'
+import localeFR from './languages/fr-FR.json'
+import localeEN from './languages/en-EN.json'
+import localeES from './languages/es-ES.json'
 
-var locales = {
+const locales = {
     'fr-FR': localeFR,
     'en-EN': localeEN,
     'es-ES': localeES
 
 };
 
-export default function (language) {
-    var currentLanguage = language;
+export default function (currentLanguage) {
 
     return {
+        locales,
 
-        locales: locales,
-        setLangue: function (langue) {
-            currentLanguage = langue;
-        },
-        getMsg: function (key, data) {
-            var result = key.split('.').reduce((prevResult, subKey) => {
-                    var result = prevResult[subKey];
+            getMsg: function (key, data) {
+            if (!key) {
+                return key;
+            }
+            let result = key.split('.').reduce((prevResult, subKey) => {
+                    const result = prevResult[subKey];
                     return typeof result === 'undefined' ? key : result;
                 }, locales[currentLanguage].messages),
                 countKey,

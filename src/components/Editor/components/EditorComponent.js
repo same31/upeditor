@@ -16,7 +16,7 @@ import FormatListNumbered from 'material-ui/svg-icons/editor/format-list-numbere
 import ActionLanguage from 'material-ui/svg-icons/action/language';
 import {getHTMLSemanticErrorList} from '../htmlUtils';
 import htmlOKContent from '../input/Example_01_deux_colonnes.html';
-import Internalisation from '../Internalisation.js';
+import initIntl from '../intl.js';
 
 const documentStyle = {
     margin:    20,
@@ -32,54 +32,56 @@ export default class EditorComponent extends Component {
         this.state     = {
             open:          false,
             content:       {
-                __html: "<div class='info-div" +
-                        "' contenteditable='false'>" +
-                        "No document, select a document to edit in the main menu.</div>"
+                __html: "<div class='info-div' contentEditable='false'></div>"
             },
-            title:         "No document",
+            title:         '',
             openFileMenu:  false,
             languageMenu:  false,
             errorSelected: false,
             errorMessage:  "",
             language:      'en-EN',
-            intel:         null
+            intl:          null
         };
     }
 
-    clickHandler = (e) => {
+    clickHandler = e => {
         // Getting an array of DOM elements
         // Then finding which element was clicked
-        const index        = e.target,
-              errorMessage = index.getAttribute("data-error-message");
+        const currentNode  = e.target,
+              errorMessage = currentNode.getAttribute("data-error-message");
         if (errorMessage) {
             this.setState({
                 errorSelected: true,
-                errorMessage:  errorMessage,
-                currentNode:   index
+                errorMessage,
+                currentNode
             });
         } else {
             this.setState({
                 errorSelected: false,
                 errorMessage:  "",
-                currentNode:   index
+                currentNode
             });
         }
     };
 
     componentWillMount () {
         this.setLanguage(this.state.language);
+
+        document.addEventListener('onPaste', this.checkHTMLSem);
     }
 
+    handlePaste = () => {
+        this.checkHTMLSemantic(document.getElementById('accessibleDocument').childNodes);
+    };
+
     setLanguage (language) {
-        const intel = Internalisation(language);
+        const intl = initIntl(language);
         this.setState({
-            intel:   intel,
+            intl,
             content: {
-                __html: "<div class='info-div'" +
-                        " contenteditable='false'>" +
-                        intel.getMsg("noDocumentLong") + "</div>"
+                __html: `<div class='info-div' contenteditable='false'>${intl.getMsg("noDocumentLong")}</div>`
             },
-            title:   intel.getMsg("noDocument")
+            title:   intl.getMsg("noDocument")
         }, () => {
             this.htmlInput = [
                 {
@@ -91,7 +93,7 @@ export default class EditorComponent extends Component {
                     content: { __html: "<h2>HELLO WORLD</h2><p>A stepping stone to the ultimate success</p><div>Say hello to my little DIV</div>" }
                 },
                 {
-                    title:   intel.getMsg("emptyDocument"),
+                    title:   intl.getMsg("emptyDocument"),
                     content: { __html: "" }
                 }
             ];
@@ -102,7 +104,7 @@ export default class EditorComponent extends Component {
         this.setState({ open: !this.state.open });
     }
 
-    handleOpenFileMenu = (event) => {
+    handleOpenFileMenu = event => {
         // This prevents ghost click.
         event.preventDefault();
 
@@ -118,7 +120,7 @@ export default class EditorComponent extends Component {
         });
     };
 
-    openLanguageMenu = (event) => {
+    openLanguageMenu = event => {
         // This prevents ghost click.
         event.preventDefault();
 
@@ -137,9 +139,8 @@ export default class EditorComponent extends Component {
     /**
      * @description Changes the current selected HTML node to the given anchor {h1,h2,h3}
      * @param anchor
-     * @param event
      */
-    setAnchor = (anchor) => {
+    setAnchor = anchor => {
         let currentSelection = document.getSelection().anchorNode;
         if (currentSelection.nodeName === "#text") {
             currentSelection = currentSelection.parentNode;
@@ -162,38 +163,32 @@ export default class EditorComponent extends Component {
     };
 
     checkHTMLSemantic = () => {
-        const htmlSemanticErrorList = getHTMLSemanticErrorList(document.getElementById('accessibleDocument').childNodes);
-
-        htmlSemanticErrorList.forEach(htmlSemanticError => {
-            if (htmlSemanticError.errorLevel) {
-                htmlSemanticError.htmlElement.setAttribute('data-error-level', htmlSemanticError.errorLevel);
-                htmlSemanticError.htmlElement.setAttribute('data-error-message', htmlSemanticError.error);
-            }
-        });
-
-        console.log('elements in error:', htmlSemanticErrorList.filter(htmlSemanticError => htmlSemanticError.error)
-            .map(htmlSemanticError => htmlSemanticError.htmlElement));
-
-        console.log('error messages:', htmlSemanticErrorList.filter(htmlSemanticError => htmlSemanticError.error)
-            .map(htmlSemanticError => htmlSemanticError.error));
+        getHTMLSemanticErrorList(document.getElementById('document-edit').childNodes)
+            .forEach(htmlSemanticError => {
+                if (htmlSemanticError.error.level) {
+                    htmlSemanticError.htmlElement.setAttribute('data-error-level', htmlSemanticError.error.level);
+                    htmlSemanticError.htmlElement.setAttribute('data-error-message',
+                        this.state.intl.getMsg(htmlSemanticError.error.message, htmlSemanticError.error.data));
+                }
+            });
     };
 
     editDocument (listItem) {
-        this.setState({
-            ...listItem
-        }, () => {
+        this.setState({ ...listItem }, () => {
             if (listItem.content.__html) {
                 this.checkHTMLSemantic();
             }
             else {
-                document.getElementById('accessibleDocument').focus();
+                const emptyParagraph     = document.createElement('P');
+                emptyParagraph.innerHTML = this.state.intl.getMsg('startTyping');
+                document.getElementById('document-edit').appendChild(emptyParagraph);
             }
             this.toggleDrawer();
         });
     }
 
     modifyLanguage (newLanguage) {
-        if (this.state.intel.locales[newLanguage] !== undefined) {
+        if (this.state.intl.locales[newLanguage]) {
             this.setLanguage(newLanguage);
             this.handleLanguageMenuClose();
         }
@@ -204,16 +199,18 @@ export default class EditorComponent extends Component {
     }
 
     onFileSelected (event) {
-        var tgt   = event.target || window.event.srcElement,
-            files = tgt.files;
+        const tgt   = event.target || window.event.srcElement,
+              files = tgt.files;
 
         // FileReader support
         if (FileReader && files && files.length) {
-            var fr    = new FileReader();
+            const fr  = new FileReader();
             fr.onload = function () {
-
-                //TODO it will be in an other div to put this img, but the BASE64 is in fr.result
-                document.getElementById('imgShowed').src = fr.result;
+                const image = document.createElement('IMG');
+                // Base 64
+                image.src   = fr.result;
+                image.alt   = files[0].name;
+                document.getElementById('document-edit').appendChild(image);
             };
             fr.readAsDataURL(files[0]);
         }
@@ -222,7 +219,7 @@ export default class EditorComponent extends Component {
         else {
             this.setState({
                 errorSelected: true,
-                errorMessage:  this.state.intel.getMsg("functionalityNotWorking")
+                errorMessage:  this.state.intl.getMsg("functionalityNotWorking")
             });
             // fallback -- perhaps submit the input to an iframe and temporarily store
             // them on the server until the user's session ends.
@@ -230,7 +227,7 @@ export default class EditorComponent extends Component {
     }
 
     render () {
-        const getMsg = this.state.intel.getMsg;
+        const getMsg = this.state.intl.getMsg;
 
         return (
             <div>
@@ -279,8 +276,6 @@ export default class EditorComponent extends Component {
                             <ToolbarSeparator/>
                             <IconButton onClick={this.clickInsertPhoto}><InsertPhoto />
                                 <input id="chooseFileModal" type="file" accept="image/*" onChange={this.onFileSelected}/>
-                                { /*TODO: DELETE THIS LINE IMG, ONLY FOR TEST*/}
-                                <img id="imgShowed" alt=""></img>
                             </IconButton>
                         </ToolbarGroup>
                         <ToolbarGroup>
@@ -307,7 +302,7 @@ export default class EditorComponent extends Component {
                             </Popover>
                         </ToolbarGroup>
                     </Toolbar>
-                    <div id="accessibleDocument" className="document-edit"
+                    <div id="document-edit" className="document-edit" onPaste={this.handlePaste}
                          contentEditable={true} dangerouslySetInnerHTML={this.state.content}
                          onClick={this.clickHandler}/>
                     <Snackbar message={"Error : " + this.state.errorMessage} open={this.state.errorSelected}/>

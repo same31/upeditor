@@ -14,7 +14,7 @@ export function getHTMLSemanticErrorList (htmlCollection = []) {
     const elementIntegrityModel = {
         htmlElement: null,
         tagName:     null,
-        error:       null,
+        error:       {},
         errorLevel:  null,
     };
 
@@ -37,8 +37,13 @@ export function getHTMLSemanticErrorList (htmlCollection = []) {
 
             // Check allowed tags
             if (!~allowedTagList.indexOf(htmlElement.tagName)) {
-                elementIntegrity.errorLevel = 'warning';
-                elementIntegrity.error      = `Unsupported tag name ${htmlElement.tagName}`;
+                elementIntegrity.error      = {
+                    level:   'warning',
+                    message: 'errors.unsupportedTagName',
+                    data:    {
+                        tagName: htmlElement.tagName
+                    }
+                };
             }
             // Check title level integrity
             else {
@@ -47,9 +52,15 @@ export function getHTMLSemanticErrorList (htmlCollection = []) {
                     if (subtitleLevel <= maxAllowedSubtitleLevel) {
                         maxAllowedSubtitleLevel = subtitleLevel + 1;
                     }
-                    else if (subtitleLevel > maxAllowedSubtitleLevel) {
-                        elementIntegrity.errorLevel = 'error';
-                        elementIntegrity.error      = `Level ${subtitleLevel} title not allowed here, no previous level ${maxAllowedSubtitleLevel} title.`
+                    else {
+                        elementIntegrity.error = {
+                            level:   'error',
+                            message: 'errors.titleLevelNotAllowed',
+                            data:    {
+                                subtitleLevel,
+                                maxAllowedSubtitleLevel
+                            }
+                        }
                     }
                 }
             }
