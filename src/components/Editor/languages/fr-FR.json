@@ -18,6 +18,12 @@
         "title5":              "Titre 5",
         "title6":              "Titre 6",
         "file":                "Fichier",
+        "ocrModal": {
+            "title": "Ajouter une image",
+            "body": "Voulez-vous détecter et insérer le texte de cette image ?",
+            "addImage": "Ajouter le fichier image",
+            "processOCR": "Détecter et ajouter le texte de l'image"
+        },
         "errors":              {
             "functionalityNotWorking": "Cette fonctionalité ne marche pas sur votre navigateur, veuillez-en utiliser un autre plus recent.",
             "unsupportedTagName": "Balise ':tagName:' non supportée.",

@@ -17,6 +17,11 @@ import ActionLanguage from 'material-ui/svg-icons/action/language';
 import {getHTMLSemanticErrorList} from '../htmlUtils';
 import htmlOKContent from '../input/Example_01_deux_colonnes.html';
 import initIntl from '../intl.js';
+import ChooseOCRModal from './ChooseOCRModal';
+import Tesseract from 'tesseract.js';
+
+import {EventEmitter2}  from 'eventemitter2';
+window.EventBus = new EventEmitter2();
 
 const documentStyle = {
     margin:    20,
@@ -30,17 +35,21 @@ export default class EditorComponent extends Component {
         super(props);
         this.htmlInput = [];
         this.state     = {
-            open:          false,
-            content:       {
+            open:                 false,
+            content:              {
                 __html: "<div class='info-div' contentEditable='false'></div>"
             },
-            title:         '',
-            openFileMenu:  false,
-            languageMenu:  false,
-            errorSelected: false,
-            errorMessage:  "",
-            language:      'en-EN',
-            intl:          null
+            title:                '',
+            openFileMenu:         false,
+            languageMenu:         false,
+            errorSelected:        false,
+            errorMessage:         "",
+            chooseOCRModal: {
+                open: false,
+                image: null
+            },
+            language:             'en-EN',
+            intl:                 null
         };
     }
 
@@ -66,6 +75,25 @@ export default class EditorComponent extends Component {
 
     componentWillMount () {
         this.setLanguage(this.state.language);
+
+        window.EventBus.on('chooseOCR', (recognize, image) => {
+            this.setState({chooseOCRModal: {open: false}}, () => {
+                const documentEditElement = document.getElementById('document-edit');
+                if (recognize) {
+                    // OCR
+                    Tesseract.recognize(image)
+                        .progress(function  (p) { console.log('progress', p)    })
+                        .then(function (result) { console.log('result', result);
+                            const ocrParagraph = document.createElement('P');
+                            ocrParagraph.innerHTML = result.text;
+                            documentEditElement.appendChild(ocrParagraph);
+                        });
+                }
+                else {
+                    documentEditElement.appendChild(image);
+                }
+            });
+        });
 
         document.addEventListener('onPaste', this.checkHTMLSem);
     }
@@ -198,19 +226,25 @@ export default class EditorComponent extends Component {
         document.getElementById("chooseFileModal").click();
     }
 
-    onFileSelected (event) {
+    onFileSelected = event => {
         const tgt   = event.target || window.event.srcElement,
               files = tgt.files;
 
         // FileReader support
         if (FileReader && files && files.length) {
             const fr  = new FileReader();
-            fr.onload = function () {
+            fr.onload = () => {
                 const image = document.createElement('IMG');
                 // Base 64
                 image.src   = fr.result;
                 image.alt   = files[0].name;
-                document.getElementById('document-edit').appendChild(image);
+
+                this.setState({
+                    chooseOCRModal: {
+                        open: true,
+                        image
+                    }
+                });
             };
             fr.readAsDataURL(files[0]);
         }
@@ -224,7 +258,7 @@ export default class EditorComponent extends Component {
             // fallback -- perhaps submit the input to an iframe and temporarily store
             // them on the server until the user's session ends.
         }
-    }
+    };
 
     render () {
         const getMsg = this.state.intl.getMsg;
@@ -306,6 +340,7 @@ export default class EditorComponent extends Component {
                          contentEditable={true} dangerouslySetInnerHTML={this.state.content}
                          onClick={this.clickHandler}/>
                     <Snackbar message={"Error : " + this.state.errorMessage} open={this.state.errorSelected}/>
+                    <ChooseOCRModal getMsg={getMsg} {...this.state.chooseOCRModal}/>
                 </Paper>
             </div>
         );

@@ -18,6 +18,12 @@
         "title5":              "Título 5",
         "title6":              "Título 6",
         "file":                "Archivo",
+        "ocrModal": {
+            "title": "Añadir una imagen",
+            "body": "¿ Quiere detectar y añadir el texto de esta imagen ?",
+            "addImage": "Añadir la imagen",
+            "processOCR": "Detectar y añadir el texto de la imagen"
+        },
         "errors":              {
             "functionalityNotWorking": "Esta funcionalidad no funciona en su navegador, por favor utilice uno más moderno."
         }

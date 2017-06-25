@@ -18,6 +18,12 @@
         "title5":              "Title 5",
         "title6":              "Title 6",
         "file":                "File",
+        "ocrModal": {
+            "title": "Add image",
+            "body": "Would you like to recognize and insert text from this image ?",
+            "addImage": "Add image file",
+            "processOCR": "Recognize and add text from image"
+        },
         "errors":              {
             "functionalityNotWorking": "This functionality does not work with your explorer, please use a more recent one.",
             "unsupportedTagName":      "Unsupported tag name ':tagName:'",
