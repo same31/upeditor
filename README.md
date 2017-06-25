@@ -1,33 +1,51 @@
-CodeFest Toulouse: boilerplate
-===================
+# CodeFest Toulouse: UpEditor
+
+## Equipe: LETOFNI (Infotel)
+
+### Membres de l'equipe:
+* Matthieu Mitrani
+* Maël Jarnole
+* Pablo Operé Portero
 
 
-Bienvenue au codefest toulouse. Ceci est notre boilerplate basé sur ReactJS. Il vous permettra d'avoir une base de développement pour réaliser au mieux l'épreuve qui vous a été assignée.
 
-----------
+## Défi 
 
 
-Comment démarrer le boilerplate
--------------
+Bienvenue sur notre projet qui participe sur le hackathon Code Fest Toulouse sur le défi numéro 2 : [Points clé du défi](https://github.com/carbontracking/codefest/blob/master/D%C3%A9fi_02.md)
 
-La première étape est de cloner ce boilerplate sur votre ordinateur (sans déééééc). Puis d'installer tous les packages npm en tapant la commande suivante:
+Nous avons eu 2 jours pour dévélopper ce projet.
+
+
+
+## Comment démarrer le projet
+
+
+La première étape est d'avoir node et npm sur votre ordinateur, cloner le projet. Puis d'installer tous les packages npm en tapant la commande suivante:
 
     npm install
 Ensuite, démarrez simplement l'appli
 
     npm start
-Il est possible d'utiliser yarn si vous préférez
 
-<i class="icon-list"></i> Structure de l'application
--------------
 
-Notre boilerplate est structuré de la facon suivante:
 
-    boilerplate/
+## Technologies utilisées
+
+* [Boiler plate ReactJS](https://github.com/meteor-intelligence-team/react-boilerplate)
+* [Material UI](https://github.com/callemall/material-ui)
+* [Tesseract (OCR)](https://github.com/naptha/tesseract.js#tesseractjs)
+* Internationalisation (fait maison sur le projet)
+* [EventEmitter2](https://github.com/asyncly/EventEmitter2)
+
+ ## Structure du projet:
+
+    upeditor/
 	 node_modules/
 	   package.json
 	 public/
 	   index.html
+	   codefest_logo.png
 	   favicon.ico
 	 src/
 	   App.css
@@ -39,30 +57,20 @@ Notre boilerplate est structuré de la facon suivante:
 	         CodeFest/
 		        codefest_logo.png
 		        CodeFest.js
-	         YourComponent/
+	         Editor/
+	         	components/
+	         		EditorComponent.js
+	         	input/
+	         		Example_01_deux_colonnes.html
+	         	languages/
+	         		en-EN.json
+	         		es-ES.json
+	         		fr-FR.json
+	         	EditorApp.js
+	         	htmlUtils.js
+	         	intl.js
 		        package.json
+		        style.css
 	  .babelrc
 	  package.json
 	  README.md
-
-
-<i class="icon-github"></i> Developpement
--------------
-
-Un dossier YourComponent est présent dans le dossier /src/components. c'est juste un indication d'où placer votre composant afin que le jury puisse le retrouver simplement. Vous pouvez le nommer TheCodeFestTeamRocks si vous le souhaitez aussi.
-
-La facon la plus facile pour tout le monde d'organiser son projet serait de créer entièrement votre composant dans ce dossier de dev et d'en importer le rendu/index dans le fichier App se trouvant à la racine du dossier /src.
-
-Un fichier pakage.json est également présent. N'oubliez pas d'y mettre les dépendences requises pour votre composant à chaque fois que vous en ajoutez une au boilerplate. cela nous permettra lors de l'intégration de savoir quelles sont les dépendances utilisées.
-
-
-<i class="icon-code"></i> Github
--------------
-
-Un repo github est mis à la disposition de votre équipe (celui-ci oui). N'oubliez pas de push votre code régulièrement afin qu'on puisse suivre votre évolution, testez vos fonctionnalités et ainsi répondre à vos questions, si vous en avez évidemment.
-
-Si tout le monde suit cette hierarchie, on gagnera un temps foufou :)
-
-Allé, Enjoy React, enjoy the code et bonne chance à tous.
-
-N'héistez pas à nous poser des questions, on est là pour ça.
